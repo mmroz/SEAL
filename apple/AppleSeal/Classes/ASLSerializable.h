@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ASLSerializable<T> : NSObject
+@interface ASLSerializable<T> : NSObject <NSCoding>
     @property (nonatomic, readonly) T object;
 @end
 
