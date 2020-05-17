@@ -27,11 +27,11 @@
 # pragma mark - NSCoding
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    std::size_t const lengthUpperBound = _serializable->save_size(seal::Serialization::compr_mode_default);
-    NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
-    std::size_t const actualLength = _serializable->save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
-    [data setLength:actualLength];
-    [coder encodeDataObject:data];
+//    std::size_t const lengthUpperBound = _serializable->save_size(seal::Serialization::compr_mode_default);
+//    NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
+//    std::size_t const actualLength = _serializable->save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
+//    [data setLength:actualLength];
+//    [coder encodeDataObject:data];
 }
 
 @end

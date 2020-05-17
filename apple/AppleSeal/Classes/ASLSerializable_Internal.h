@@ -16,10 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ASLSerializable ()
 
-//@property (nonatomic, assign, readonly) seal::util::RNSBase * rnsBase;
-//
-//- (instancetype)initWithRnsBase:(const seal::util::RNSBase)rnsBase freeWhenDone:(BOOL)freeWhenDone;
-
 -(instancetype)initWithGaloisKey:(seal::Serializable<seal::GaloisKeys>)serializable;
 
 -(instancetype)initWithRelinearizationKeys:(seal::Serializable<seal::RelinKeys>)serializable;
