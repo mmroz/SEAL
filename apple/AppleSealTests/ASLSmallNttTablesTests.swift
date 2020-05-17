@@ -1,5 +1,5 @@
 //
-//  ASLSmallNttTablesTests.swift
+//  ASLNttTablesTests.swift
 //  AppleSealTests
 //
 //  Created by Mark Mroz on 2020-04-21.
@@ -9,112 +9,97 @@
 import AppleSeal
 import XCTest
 
-class ASLSmallNttTablesTests: XCTestCase {
+class ASLNttTablesTests: XCTestCase {
+    func testWithCoefficentCountPowerAndModulus() throws {
+        XCTAssertNoThrow(ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024)))
+    }
     
-    var context: ASLSealContext? = nil
+    func testWithCoefficentCountPowerAndModulusAndPool() {
+        XCTAssertNoThrow(ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024), pool: .global()))
+    }
     
-    override func setUp() {
-        super.setUp()
-        let parms = ASLEncryptionParameters(schemeType: .BFV)
+    func testCreateWithCoefficentCountPower() throws {
+        let polyModulusDegree = 8192
+        let modulus = try ASLCoefficientModulus.create(polyModulusDegree, bitSizes: [40, 40, 40, 40, 40])
+        let otherTable = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
         
-        let polyModulusDegree = 4096
-        try! parms.setPolynomialModulusDegree(polyModulusDegree)
+        XCTAssertNoThrow(try ASLNttTables.create(withCoefficentCountPower: 4, modulus: modulus, tables: otherTable, pool: .global()))
+    }
+    
+    func testNttNegacyclicHarveyLazyWithOperand() throws {
+        let otherTable = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
         
-        try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
+        XCTAssertNoThrow(ASLNttTables.nttNegacyclicHarvey(withOperand: 4, tables: otherTable))
+    }
+    
+    func testNttNegacyclicHarveyWithOperand() throws {
+        let otherTable = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
         
-        try! parms.setPlainModulus(ASLSmallModulus(value: 1024))
-        
-        context = try! ASLSealContext(parms)
+        XCTAssertNoThrow(ASLNttTables.nttNegacyclicHarvey(withOperand: 4, tables: otherTable))
     }
     
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-    }
-
-    func testCreateWithDefaultInitializers() {
-        _ = ASLSmallNttTables()
-    }
-
-
-    func testCreateWithPool() throws {
-        _ = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
+    func testInverseNttNegacyclicHarveyLazyWithOperand() throws {
+        let otherTable = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        XCTAssertNoThrow(ASLNttTables.inverseNttNegacyclicHarveyLazy(withOperand: 4, tables: otherTable))
     }
     
-    func testCreateWithPower() throws {
-        XCTAssertNoThrow(try ASLSealContext(ASLEncryptionParameters(schemeType: .CKKS)).firstContextData.smallNttTables)
+    func testInverseNttNegacyclicHarveyWithOperand() throws {
+        let otherTable = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        XCTAssertNoThrow(ASLNttTables.inverseNttNegacyclicHarvey(withOperand: 4, tables: otherTable))
     }
     
-    func testCreateWithPowerWithPool() throws {
-           _ = ASLSmallNttTables(coefficentCountPower: 2, smallModulus: try ASLSmallModulus(value: 5), pool: ASLMemoryPoolHandle(clearOnDestruction: true))
+    func testGetFromRootPowersWithIndex() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.getFromRootPowers(withIndex: 0)
+        XCTAssertEqual(result, 0)
     }
     
-    func testGenerateReturnsTrueWhenSuccessful() throws {
-        let  tables = context!.firstContextData.smallNttTables
-        XCTAssertFalse(tables.generate(2, smallModulus: try ASLSmallModulus(value: 5)))
+    func testGetFromScaledRootPowersWithIndex() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.getFromScaledRootPowers(withIndex: 0)
+        XCTAssertEqual(result, 0)
     }
     
-    func testResetClearsData() throws {
-         let  tables = context!.firstContextData.smallNttTables
-        
-        tables.reset()
+    func testGetFromInverseRootPowersWithIndex() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.getFromInverseRootPowers(withIndex: 0)
+        XCTAssertEqual(result, 0)
     }
     
-    func testGetFromRootPowersWithIndex() {
-         let  tables = context!.firstContextData.smallNttTables
-        XCTAssertEqual(1, tables.getFromRootPowers(withIndex: 0))
+    func testGetFromScaledInverseRootPowersWithIndex() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.getFromScaledInverseRootPowers(withIndex: 0)
+        XCTAssertEqual(result, 0)
     }
     
-    func testGetFromScaledRootPowersWithIndex() {
-        let  tables = context!.firstContextData.smallNttTables
-        XCTAssertEqual(268435743, tables.getFromScaledRootPowers(withIndex: 0))
+    func testGetInverseDegreeModulo() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.getInverseDegreeModulo()
+        XCTAssertEqual(result, 0)
     }
     
-    func testGetFromInverseRootPowersWithIndex() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-        XCTAssertEqual(1, tables.getFromInverseRootPowers(withIndex: 0))
+    func testRoot() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.root
+        XCTAssertEqual(result, 0)
     }
     
-    func testGetFromScaledInverseRootPowersWithIndex() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-        XCTAssertEqual(1, tables.getFromScaledInverseRootPowers(withIndex: 0))
+    func testModulus() throws {
+        let modulus = try ASLModulus(value: 1024)
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: modulus)
+        let result = tables.modulus
+        XCTAssertEqual(result, modulus)
     }
     
-    
-    func testGetFromScaledInverseRootPowersDividedByTwoWithIndex() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-        XCTAssertEqual(1, tables.getFromScaledInverseRootPowersDividedByTwo(withIndex: 0))
-    }
-
-
-    func testGetFromInverseRootPowersDividedByTwoWithIndex() {
-         let  tables = context!.firstContextData.smallNttTables
-        return XCTAssertEqual(34359701505, tables.getFromInverseRootPowersDividedByTwo(withIndex: 0))
+    func testCoefficentCountPower() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.coefficentCountPower
+        XCTAssertEqual(result, 0)
     }
     
-    func testGetInverseDegreeModulo() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-        XCTAssertEqual(1, tables.getInverseDegreeModulo())
-    }
-    
-    func testRoot() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-         XCTAssertEqual(1, tables.root)
-    }
-    
-    func testModulus() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-         XCTAssertEqual(try ASLSmallModulus(value: 4417147200), tables.modulus)
-    }
-    
-
-    func testCoefficentCountPower() {
-         let  tables = context!.firstContextData.smallNttTables
-        XCTAssertEqual(4096, tables.coefficentCount)
-    }
-
-    func testCoefficentCount() {
-         let  tables = ASLSmallNttTables(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-         XCTAssertEqual(0, tables.coefficentCount)
+    func testCoefficentCount() throws {
+        let tables = ASLNttTables(coefficentCountPower: 8, modulus: try ASLModulus(value: 1024))
+        let result = tables.coefficentCount
+        XCTAssertEqual(result, 0)
     }
 }

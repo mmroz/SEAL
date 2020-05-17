@@ -56,58 +56,58 @@ class ASLEncryptionParametersTests: XCTestCase {
 	
 	func testPlainModulus() {
 		let bfv = ASLEncryptionParameters(schemeType: .BFV)
-		XCTAssertEqual(bfv.plainModulus, try! ASLSmallModulus(value: 0))
-		XCTAssertNoThrow(try bfv.setPlainModulus(try! ASLSmallModulus(value: 1024)))
-		XCTAssertEqual(bfv.plainModulus, try! ASLSmallModulus(value: 1024))
+		XCTAssertEqual(bfv.plainModulus, try! ASLModulus(value: 0))
+		XCTAssertNoThrow(try bfv.setPlainModulus(try! ASLModulus(value: 1024)))
+		XCTAssertEqual(bfv.plainModulus, try! ASLModulus(value: 1024))
 		
 		let ckks = ASLEncryptionParameters(schemeType: .CKKS)
-		XCTAssertEqual(ckks.plainModulus, try! ASLSmallModulus(value: 0))
-		XCTAssertThrowsError(try ckks.setPlainModulus(try! ASLSmallModulus(value: 1024)))
-		XCTAssertEqual(ckks.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(ckks.plainModulus, try! ASLModulus(value: 0))
+		XCTAssertThrowsError(try ckks.setPlainModulus(try! ASLModulus(value: 1024)))
+		XCTAssertEqual(ckks.plainModulus, try! ASLModulus(value: 0))
 		
 		let none = ASLEncryptionParameters(schemeType: .none)
-		XCTAssertEqual(none.plainModulus, try! ASLSmallModulus(value: 0))
-		XCTAssertThrowsError(try none.setPlainModulus(try! ASLSmallModulus(value: 1024)))
-		XCTAssertEqual(none.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(none.plainModulus, try! ASLModulus(value: 0))
+		XCTAssertThrowsError(try none.setPlainModulus(try! ASLModulus(value: 1024)))
+		XCTAssertEqual(none.plainModulus, try! ASLModulus(value: 0))
 	}
 	
 	func testSetPlainModulusWithInteger() {
 		let bfv = ASLEncryptionParameters(schemeType: .BFV)
-		XCTAssertEqual(bfv.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(bfv.plainModulus, try! ASLModulus(value: 0))
 		XCTAssertNoThrow(try bfv.setPlainModulusWithInteger(1024))
-		XCTAssertEqual(bfv.plainModulus, try! ASLSmallModulus(value: 1024))
+		XCTAssertEqual(bfv.plainModulus, try! ASLModulus(value: 1024))
 		
 		let ckks = ASLEncryptionParameters(schemeType: .CKKS)
-		XCTAssertEqual(ckks.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(ckks.plainModulus, try! ASLModulus(value: 0))
 		XCTAssertNoThrow(try ckks.setPlainModulusWithInteger(0))
-		XCTAssertEqual(ckks.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(ckks.plainModulus, try! ASLModulus(value: 0))
 		
 		let none = ASLEncryptionParameters(schemeType: .none)
-		XCTAssertEqual(none.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(none.plainModulus, try! ASLModulus(value: 0))
 		XCTAssertNoThrow(try none.setPlainModulusWithInteger(0))
-		XCTAssertEqual(none.plainModulus, try! ASLSmallModulus(value: 0))
+		XCTAssertEqual(none.plainModulus, try! ASLModulus(value: 0))
 	}
 	
 	func testCoefficientModulus() {
 		let bfv = ASLEncryptionParameters(schemeType: .BFV)
 		XCTAssertEqual(bfv.coefficientModulus, NSArray())
-		XCTAssertNoThrow(try bfv.setCoefficientModulus([try! ASLSmallModulus(value: 0)]))
-		XCTAssertEqual(bfv.coefficientModulus, NSArray(objects: try! ASLSmallModulus(value: 0)))
+		XCTAssertNoThrow(try bfv.setCoefficientModulus([try! ASLModulus(value: 0)]))
+		XCTAssertEqual(bfv.coefficientModulus, NSArray(objects: try! ASLModulus(value: 0)))
 		
 		let ckks = ASLEncryptionParameters(schemeType: .CKKS)
 		XCTAssertEqual(ckks.coefficientModulus, NSArray())
-		XCTAssertNoThrow(try ckks.setCoefficientModulus([try! ASLSmallModulus(value: 0)]))
-		XCTAssertEqual(ckks.coefficientModulus, NSArray(objects: try! ASLSmallModulus(value: 0)))
+		XCTAssertNoThrow(try ckks.setCoefficientModulus([try! ASLModulus(value: 0)]))
+		XCTAssertEqual(ckks.coefficientModulus, NSArray(objects: try! ASLModulus(value: 0)))
 		
 		let none = ASLEncryptionParameters(schemeType: .none)
 		XCTAssertEqual(none.coefficientModulus, NSArray())
-		XCTAssertThrowsError(try none.setCoefficientModulus([try! ASLSmallModulus(value: 0)]))
+		XCTAssertThrowsError(try none.setCoefficientModulus([try! ASLModulus(value: 0)]))
 		XCTAssertEqual(none.coefficientModulus, NSArray())
 	}
 	
 	func testEncoding() {
 		let encryptionParameters = ASLEncryptionParameters(schemeType: .CKKS)
-		try! encryptionParameters.setCoefficientModulus([try! ASLSmallModulus(value: 0)])
+		try! encryptionParameters.setCoefficientModulus([try! ASLModulus(value: 0)])
 		
 		let archiver = NSKeyedArchiver(requiringSecureCoding: false)
 		archiver.encode(encryptionParameters, forKey: "testObject")

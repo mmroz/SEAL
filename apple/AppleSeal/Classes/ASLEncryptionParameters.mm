@@ -12,8 +12,8 @@
 #include <stdexcept>
 #include "seal/encryptionparams.h"
 
-#import "ASLSmallModulus.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLModulus.h"
+#import "ASLModulus_Internal.h"
 #import "ASLEncryptionParameters_Internal.h"
 #import "NSString+CXXAdditions.h"
 #import "NSError+CXXAdditions.h"
@@ -94,20 +94,20 @@ static std::uint8_t sealSchemeFromASLSchemeType(ASLSchemeType schemeType) {
     return _encryptionParameters.poly_modulus_degree();
 }
 
-- (NSArray<ASLSmallModulus *> *)coefficientModulus {
-    std::vector<seal::SmallModulus> const &smallModulusList = _encryptionParameters.coeff_modulus();
-    NSMutableArray * const coefficientModulus = [NSMutableArray arrayWithCapacity:smallModulusList.size()];
+- (NSArray<ASLModulus *> *)coefficientModulus {
+    std::vector<seal::Modulus> const &modulusList = _encryptionParameters.coeff_modulus();
+    NSMutableArray * const coefficientModulus = [NSMutableArray arrayWithCapacity:modulusList.size()];
     
-    for (auto iter = smallModulusList.begin(); iter != smallModulusList.end(); ++iter) {
-        ASLSmallModulus * const smallModulus = [[ASLSmallModulus alloc] initWithSmallModulus:*iter];
-        [coefficientModulus addObject:smallModulus];
+    for (auto iter = modulusList.begin(); iter != modulusList.end(); ++iter) {
+        ASLModulus * const modulus = [[ASLModulus alloc] initWithModulus:*iter];
+        [coefficientModulus addObject:modulus];
     }
     
     return coefficientModulus;
 }
 
-- (ASLSmallModulus *)plainModulus {
-    return [[ASLSmallModulus alloc] initWithSmallModulus:_encryptionParameters.plain_modulus()];
+- (ASLModulus *)plainModulus {
+    return [[ASLModulus alloc] initWithModulus:_encryptionParameters.plain_modulus()];
 }
 
 - (ASLSchemeType)scheme {
@@ -185,15 +185,15 @@ static std::uint8_t sealSchemeFromASLSchemeType(ASLSchemeType schemeType) {
     return NO;
 }
 
-- (BOOL)setCoefficientModulus:(NSArray<ASLSmallModulus *> *)coefficientModulus
+- (BOOL)setCoefficientModulus:(NSArray<ASLModulus *> *)coefficientModulus
                         error:(NSError **)error {
-    std::vector<seal::SmallModulus> smallModulusList;
-    for (ASLSmallModulus * const smallModulus in coefficientModulus) {
-        smallModulusList.push_back(smallModulus.smallModulus);
+    std::vector<seal::Modulus> modulusList;
+    for (ASLModulus * const modulus in coefficientModulus) {
+        modulusList.push_back(modulus.modulus);
     }
     
     try {
-        _encryptionParameters.set_coeff_modulus(smallModulusList);
+        _encryptionParameters.set_coeff_modulus(modulusList);
         return YES;
     } catch (std::logic_error const &e) {
         if (error != nil) {
@@ -209,12 +209,12 @@ static std::uint8_t sealSchemeFromASLSchemeType(ASLSchemeType schemeType) {
     return NO;
 }
 
-- (BOOL)setPlainModulus:(ASLSmallModulus *)plainModulus
+- (BOOL)setPlainModulus:(ASLModulus *)plainModulus
                   error:(NSError **)error {
     NSParameterAssert(plainModulus != nil);
     
     try {
-        _encryptionParameters.set_plain_modulus(plainModulus.smallModulus);
+        _encryptionParameters.set_plain_modulus(plainModulus.modulus);
         return YES;
     } catch (std::logic_error const &e) {
         if (error != nil) {

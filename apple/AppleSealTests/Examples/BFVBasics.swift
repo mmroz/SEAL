@@ -64,7 +64,7 @@ class BFVBasics: XCTestCase {
         /*
          Next we set the [ciphertext] `coefficient modulus' (CoeffModulus). This
          parameter is a large integer, which is a product of distinct prime numbers,
-         numbers, each represented by an instance of the SmallModulus class. The
+         numbers, each represented by an instance of the Modulus class. The
          bit-length of CoeffModulus means the sum of the bit-lengths of its prime
          factors.
          
@@ -97,7 +97,7 @@ class BFVBasics: XCTestCase {
          
          CoeffModulus.BFVDefault(polyModulusDegree),
          
-         which returns NSArray<ASLSmallModulus *> consisting of a generally good choice
+         which returns NSArray<ASLModulus *> consisting of a generally good choice
          for the given PolyModulusDegree.
          */
         try parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
@@ -119,7 +119,7 @@ class BFVBasics: XCTestCase {
          The plaintext modulus is specific to the BFV scheme, and cannot be set when
          using the CKKS scheme.
          */
-        try parms.setPlainModulus(ASLSmallModulus(value: 1024))
+        try parms.setPlainModulus(ASLModulus(value: 1024))
         
         /*
          Now that all parameters are set, we are ready to construct a SEALContext

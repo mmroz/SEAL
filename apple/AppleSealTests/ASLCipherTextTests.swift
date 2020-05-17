@@ -79,7 +79,7 @@ class ASLCipherTextTests: XCTestCase {
     
     func testCoefficientModulusCount() {
         let cipherText = ASLCipherText()
-        XCTAssertEqual(cipherText.coefficientModulusCount, 0)
+        XCTAssertEqual(cipherText.coefficientModulusSize, 0)
     }
     
     func testPolynomialModulusCount() {

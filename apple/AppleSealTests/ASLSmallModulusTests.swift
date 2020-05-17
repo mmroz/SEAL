@@ -1,5 +1,5 @@
 //
-//  ASLSmallModulusTests.swift
+//  ASLModulusTests.swift
 //  AppleSealTests
 //
 //  Created by Mark Mroz on 2019-12-29.
@@ -9,55 +9,55 @@
 import AppleSeal
 import XCTest
 
-class ASLSmallModulusTests: XCTestCase {
+class ASLModulusTests: XCTestCase {
 	// MARK: - Tests
 
 	func testCreationWithDefaultInitializer() {
-		let _ = ASLSmallModulus()
+		let _ = ASLModulus()
 	}
 	
 	func testCreationWithValueInitializer() {
-		XCTAssertNoThrow(try! ASLSmallModulus(value: 2))
+		XCTAssertNoThrow(try! ASLModulus(value: 2))
 	}
 	
 	func testCreationWithInvalidValue() {
-		XCTAssertThrowsError(try ASLSmallModulus(value: 1))
-	//	XCTAssertThrowsError(try ASLSmallModulus(value: 63))
+		XCTAssertThrowsError(try ASLModulus(value: 1))
+	//	XCTAssertThrowsError(try ASLModulus(value: 63))
 	}
 	
 	func testBitCount() {
-		let smallModulus = try! ASLSmallModulus(value: 2)
-		XCTAssertEqual(smallModulus.bitCount, 2)
+		let modulus = try! ASLModulus(value: 2)
+		XCTAssertEqual(modulus.bitCount, 2)
 	}
 	
 	func testUint64Count() {
-		let smallModulus =  try! ASLSmallModulus(value: 2)
-		XCTAssertEqual(smallModulus.uint64Count, 1)
+		let modulus =  try! ASLModulus(value: 2)
+		XCTAssertEqual(modulus.uint64Count, 1)
 	}
 	
 	func testData() {
-//		let smallModulus =  try! ASLSmallModulus(value: 2)
-//		smallModulus.data
+//		let modulus =  try! ASLModulus(value: 2)
+//		modulus.data
 //		XCTAssertTrue(false)
 	}
 	
 	func testUInt64Value() {
-		let smallModulus =  try! ASLSmallModulus(value: 2)
-		XCTAssertEqual(smallModulus.uint64Value, 2)
+		let modulus =  try! ASLModulus(value: 2)
+		XCTAssertEqual(modulus.uint64Value, 2)
 	}
 	
 	func testIsZero() {
-		let smallModulus = try! ASLSmallModulus(value: 2)
-		XCTAssertFalse(smallModulus.isZero)
+		let modulus = try! ASLModulus(value: 2)
+		XCTAssertFalse(modulus.isZero)
 	}
 	
 	func testIsPrime() {
-		let smallModulus = try! ASLSmallModulus(value: 4)
-		XCTAssertFalse(smallModulus.isPrime)
+		let modulus = try! ASLModulus(value: 4)
+		XCTAssertFalse(modulus.isPrime)
 	}
 	
 	func testConstRatio() {
-		let constRation = try! ASLSmallModulus(value: 2).constRatio()
+		let constRation = try! ASLModulus(value: 2).constRatio()
 		
 		XCTAssertEqual(constRation.floor, 0)
 		XCTAssertEqual(constRation.remainder, 0)
@@ -65,16 +65,16 @@ class ASLSmallModulusTests: XCTestCase {
 	}
 	
 	func testEncoding() {
-		let smallModulus = try! ASLSmallModulus(value: 2)
+		let modulus = try! ASLModulus(value: 2)
 		
 		let archiver = NSKeyedArchiver(requiringSecureCoding: false)
-		archiver.encode(smallModulus, forKey: "testObject")
+		archiver.encode(modulus, forKey: "testObject")
 		let data = archiver.encodedData
 
 		let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
 		unarchiver.requiresSecureCoding = false
-		let decodedSmallModulus = unarchiver.decodeObject(of: ASLSmallModulus.self, forKey: "testObject")!
+		let decodedModulus = unarchiver.decodeObject(of: ASLModulus.self, forKey: "testObject")!
 
-		XCTAssertEqual(smallModulus, decodedSmallModulus)
+		XCTAssertEqual(modulus, decodedModulus)
 	}
 }

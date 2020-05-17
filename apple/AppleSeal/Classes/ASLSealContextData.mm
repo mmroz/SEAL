@@ -12,7 +12,7 @@
 #include "seal/context.h"
 
 #import "ASLEncryptionParameters_Internal.h"
-#import "ASLSmallNttTables_Internal.h"
+#import "ASLNttTables_Internal.h"
 #import "ASLBaseConverter_Internal.h"
 
 @implementation ASLSealContextData {
@@ -46,9 +46,8 @@
 {
     NSString * encryptionParametersString = (_contextData.get() == nil) ? @"{}" : self.encryptionParameters.description;
     NSString * paramsIdString = (_contextData.get() == nil) ? @"{}" : ASLParametersIdTypeDescription(self.parametersId);
-    NSString * coeffPlainModulusString = (_contextData.get() == nil) ? @"{}" : [[NSString alloc]initWithFormat:@"%ld", (long)self.coefficientModPlainModulus];
     
-    return [NSString stringWithFormat:@"Encryption Parameters: %@, params Id: %@, Coefficient Mod PlainModulus: %@", encryptionParametersString, paramsIdString, coeffPlainModulusString];
+    return [NSString stringWithFormat:@"Encryption Parameters: %@, params Id: %@, Coefficient Mod PlainModulus: %@", encryptionParametersString, paramsIdString];
 }
 
 #pragma mark - Properties
@@ -93,10 +92,6 @@
     return result;
 }
 
-- (NSInteger)coefficientModPlainModulus {
-    return  _contextData->coeff_mod_plain_modulus();
-}
-
 - (ASLSealContextData *)previousContextData {
 	return [[ASLSealContextData alloc] initWithSEALContextData:_contextData->prev_context_data()];
 }
@@ -119,22 +114,21 @@
 
 - (ASLEncryptionParameterQualifiers)qualifiers {
     seal::EncryptionParameterQualifiers qualifiers = _contextData->qualifiers();
-    return ASLEncryptionParameterQualifiersMake(qualifiers.parameters_set, qualifiers.using_fft, qualifiers.using_ntt, qualifiers.using_batching, qualifiers.using_fast_plain_lift, qualifiers.using_descending_modulus_chain, static_cast<int>(qualifiers.sec_level));
+    return ASLEncryptionParameterQualifiersMake(qualifiers.parameters_set(), qualifiers.using_fft, qualifiers.using_ntt, qualifiers.using_batching, qualifiers.using_fast_plain_lift, qualifiers.using_descending_modulus_chain, static_cast<int>(qualifiers.sec_level));
 }
 
-- (ASLSmallNttTables *)smallNttTables {
-    auto table = _contextData->small_ntt_tables().get();
-    return [[ASLSmallNttTables alloc] initWithSmallNttTables:table freeWhenDone:NO];
+- (ASLNttTables *)smallNttTables {
+    // TODO - uh oh
+//    seal::util::NTTTables * table = [[ASLNttTables alloc] initWithNttTables:_contextData->small_ntt_tables() freeWhenDone:false];
+//    return [[ASLNttTables alloc] initWithNttTables:table freeWhenDone:NO];
+    return nil;
 }
 
-- (ASLSmallNttTables *)plainNttTables {
-    auto table = _contextData->plain_ntt_tables().get();
-    return [[ASLSmallNttTables alloc] initWithSmallNttTables:table freeWhenDone:NO];
-}
-
-- (ASLBaseConverter *)baseConverter {
-    auto converter = _contextData->base_converter().get();
-    return [[ASLBaseConverter alloc] initWithBaseConverter:converter freeWhenDone:NO];
+- (ASLNttTables *)plainNttTables {
+    // TODO - uh oh
+//    seal::util::NTTTables * table = [[ASLNttTables alloc] initWithNttTables:_contextData->plain_ntt_tables() freeWhenDone:false];
+//    return [[ASLNttTables alloc] initWithNttTables:table freeWhenDone:NO];
+     return nil;
 }
 
 @end

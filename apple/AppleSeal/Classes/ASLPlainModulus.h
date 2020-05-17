@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ASLSmallModulus.h"
+#import "ASLModulus.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /*!
- Creates a prime number SmallModulus for use as plain_modulus encryption
+ Creates a prime number Modulus for use as plain_modulus encryption
  parameter that supports batching with a given poly_modulus_degree.
  
  @param polynomialModulusDegree The value of the poly_modulus_degree
@@ -32,12 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLSealErrorCodeInvalidParameter if bitSize is out of bounds
  @throws ASLSealErrorCodeLogicError if a suitable prime could not be found
  */
-+ (ASLSmallModulus* _Nullable)batching:(size_t)polynomialModulusDegree
++ (ASLModulus* _Nullable)batching:(size_t)polynomialModulusDegree
                                bitSize:(int)bitSize
                                  error:(NSError **)error;
 
 /*!
- Creates several prime number SmallModulus elements that can be used as
+ Creates several prime number Modulus elements that can be used as
  plain_modulus encryption parameters, each supporting batching with a given
  poly_modulus_degree.
  
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  are out of bounds
  @throws ASLSealErrorCodeLogicError if not enough suitable primes could be found
  */
-+ (NSArray<ASLSmallModulus*>* _Nullable)batching:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>* _Nullable)batching:(size_t)polynomialModulusDegree
                                         bitSizes:(NSArray<NSNumber*>*)bitSizes
                                            error:(NSError **)error;
 @end

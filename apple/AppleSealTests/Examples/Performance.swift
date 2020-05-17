@@ -17,7 +17,7 @@ class Performance: XCTestCase {
         var polyModulusDegree = 4096
         try parms.setPolynomialModulusDegree(polyModulusDegree)
         try parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try parms.setPlainModulus(ASLSmallModulus(value: 786433))
+        try parms.setPlainModulus(ASLModulus(value: 786433))
         
         try bfvTest(context: try ASLSealContext(parms))
         
@@ -25,14 +25,14 @@ class Performance: XCTestCase {
        polyModulusDegree = 8192
        try parms.setPolynomialModulusDegree(polyModulusDegree)
         try parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try parms.setPlainModulus(ASLSmallModulus(value: 786433))
+        try parms.setPlainModulus(ASLModulus(value: 786433))
         try bfvTest(context: try ASLSealContext(parms))
        
        print()
        polyModulusDegree = 16384
        try parms.setPolynomialModulusDegree(polyModulusDegree)
         try parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try parms.setPlainModulus(ASLSmallModulus(value: 786433))
+        try parms.setPlainModulus(ASLModulus(value: 786433))
         try bfvTest(context: try ASLSealContext(parms))
     }
     
@@ -356,7 +356,7 @@ class Performance: XCTestCase {
              For scale we use the square root of the last CoeffModulus prime
              from parms.
              */
-            let lastValue = (parms.coefficientModulus.lastObject as? ASLSmallModulus)!.uint64Value
+            let lastValue = (parms.coefficientModulus.lastObject as? ASLModulus)!.uint64Value
             let scale = sqrt(NSNumber(value: lastValue).floatValue)
             let plain = try ASLPlainText(capacity: parms.polynomialModulusDegree * parms.coefficientModulus.count, coefficientCount: 0)
             try timedEvent {

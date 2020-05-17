@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "ASLSealContext.h"
-#import "ASLSmallModulus.h"
+#import "ASLModulus.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  or is too large
  @throws ASLSealErrorCodeInvalidParameter if securityLevel is sec_level_type::none
  */
-+ (NSArray<ASLSmallModulus*>* _Nullable)bfvDefault:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>* _Nullable)bfvDefault:(size_t)polynomialModulusDegree
                                      securityLevel:(ASLSecurityLevel)securityLevel
                                              error:(NSError **)error;
 
@@ -79,13 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLSealErrorCodeInvalidParameter if polynomialModulusDegree is not a power-of-two
  or is too large
  */
-+ (NSArray<ASLSmallModulus*>* _Nullable)bfvDefault:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>* _Nullable)bfvDefault:(size_t)polynomialModulusDegree
                                              error:(NSError **)error;
 
 /*!
  Returns a custom coefficient modulus suitable for use with the specified
  poly_modulus_degree. The return value will be a vector consisting of
- SmallModulus elements representing distinct prime numbers of bit-lengths
+ Modulus elements representing distinct prime numbers of bit-lengths
  as given in the bit_sizes parameter. The bit sizes of the prime numbers
  can be at most 60 bits.
  
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLSealErrorCodeLogicError if not enough suitable primes could be found
  */
 
-+ (NSArray<ASLSmallModulus*>* _Nullable)create:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>* _Nullable)create:(size_t)polynomialModulusDegree
                             bitSizes:(NSArray<NSNumber*>*)bitSizes
                                error:(NSError **)error;
 

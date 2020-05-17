@@ -17,7 +17,7 @@ extension ASLSealContext {
         let polyModulusDegree = 4096
         try! parms.setPolynomialModulusDegree(polyModulusDegree)
         try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try! parms.setPlainModulus(ASLSmallModulus(value: 1024))
+        try! parms.setPlainModulus(ASLModulus(value: 1024))
         return try! ASLSealContext(parms)
     }
     

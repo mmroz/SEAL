@@ -11,7 +11,7 @@
 #import "ASLEncryptionParameters.h"
 #import "ASLParametersIdType.h"
 #import "ASLEncryptionParameterQualifiers.h"
-#import "ASLSmallNttTables.h"
+#import "ASLNttTables.h"
 #import "ASLBaseConverter.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,11 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign, readonly) const NSNumber * totalCoefficientModulus;
 
-@property (nonatomic, readonly, assign) ASLBaseConverter* baseConverter;
+// TODO - add tool
 
-@property (nonatomic, readonly, assign) ASLSmallNttTables* smallNttTables;
+@property (nonatomic, readonly, assign) ASLNttTables* smallNttTables;
 
-@property (nonatomic, readonly, assign) ASLSmallNttTables* plainNttTables;
+@property (nonatomic, readonly, assign) ASLNttTables* plainNttTables;
 
 /*!
  Returns the significant bit count of the total coefficient modulus.
@@ -95,11 +95,6 @@ NS_ASSUME_NONNULL_BEGIN
  that exceed plain_upper_half_threshold.
  */
 @property (nonatomic, assign, readonly) const NSInteger upperHalfIncrement;
-
-/*!
- Return the non-RNS form of upppoer_half_increment which is q mod t.
- */
-@property (nonatomic, assign, readonly) const NSInteger coefficientModPlainModulus;
 
 /*!
  Returns a shared_ptr to the context data corresponding to the previous parameters

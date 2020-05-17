@@ -325,7 +325,7 @@ NS_ASSUME_NONNULL_BEGIN
  associated encryption parameters. This directly affects the
  allocation size of the ciphertext.
  */
-@property (nonatomic, readonly, assign) size_t coefficientModulusCount;
+@property (nonatomic, readonly, assign) size_t coefficientModulusSize;
 
 /*!
  Returns the degree of the polynomial modulus of the associated

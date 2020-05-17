@@ -62,7 +62,7 @@ class Encoders: XCTestCase {
          exceed this value at any point during our computation otherwise the result
          will be incorrect.
          */
-        try parms.setPlainModulus(ASLSmallModulus(value: 512))
+        try parms.setPlainModulus(ASLModulus(value: 512))
         let context = try ASLSealContext(parms)
         print(context)
         print()

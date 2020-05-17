@@ -11,15 +11,15 @@ import XCTest
 
 class ASLPlainModulusTests: XCTestCase {
 	func testBatching() throws {
-		let smallModulus = try ASLPlainModulus.batching(1, bitSize: 2)
-		XCTAssertNotNil(smallModulus)
-		XCTAssertEqual(ASLSmallModulus(), smallModulus)
+		let modulus = try ASLPlainModulus.batching(1, bitSize: 2)
+		XCTAssertNotNil(modulus)
+		XCTAssertEqual(ASLModulus(), modulus)
 	}
 	
 	func testBatchingWithBitSizes() throws {
-		let smallModulus = try ASLPlainModulus.batching(1, bitSizes: [1])
-		XCTAssertNotNil(smallModulus)
-		XCTAssertEqual([ASLSmallModulus](), smallModulus)
+		let modulus = try ASLPlainModulus.batching(1, bitSizes: [1])
+		XCTAssertNotNil(modulus)
+		XCTAssertEqual([ASLModulus](), modulus)
 	}
 	
 }

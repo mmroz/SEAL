@@ -115,7 +115,7 @@ class Levels: XCTestCase {
         print("      ParmsId: {\(context.keyParameterIds)}")
         print("      CoeffModulus primes: ")
         contextData.encryptionParameters.coefficientModulus.forEach {
-            let prime = $0 as! ASLSmallModulus
+            let prime = $0 as! ASLModulus
             print(prime)
         }
         print()
@@ -138,7 +138,7 @@ class Levels: XCTestCase {
             print("      ParmsId: {\(contextData.parametersId)}")
             print("      CoeffModulus primes: ")
             contextData.encryptionParameters.coefficientModulus.forEach {
-                print(($0 as! ASLSmallModulus).uint64Value)
+                print(($0 as! ASLModulus).uint64Value)
             }
             print()
             print("\\")

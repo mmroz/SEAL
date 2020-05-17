@@ -343,57 +343,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setSecretKey:(ASLSecretKey *)secretKey
                error:(NSError **)error;
 
-/*!
- Encrypts a zero plaintext with the secret key and saves result to a given
- memory location. The encryption parameters for the resulting ciphertext
- correspond to:
- 1) in BFV, the highest (data) level in the modulus switching chain,
- 2) in CKKS, the encryption parameters of the plaintext.
- Dynamic memory allocations in the process are allocated from the memory
- pool pointed to by the given MemoryPoolHandle.
- 
- The second polynomial in result is randomly generated and are replaced
- with the seed used to compress output size. The output is in binary format
- and not human-readable.
- 
- @param plainText The plaintext to encrypt
- @throws ASL_LogicError if a secret key is not set
- @throws ASL_InvalidArgument if out is null or if size is too small to
- contain a SEALHeader
- @throws ASL_LogicError if compression mode is not supported, or if
- compression failed
- @throws ASL_RuntimeError if I/O operations failed
- @throws ASL_InvalidArgument if plain is not valid for the encryption
- parameters
- @throws ASL_InvalidArgument if plain is not in default NTT form
- @throws ASL_InvalidArgument if pool is uninitialized
- */
-- (NSData * _Nullable)encryptSymmetricSaveWithPlainText:(ASLPlainText *)plainText
-                                                  error:(NSError **)error;
-
-/*!
- Encrypts a zero plaintext with the secret key and saves result to a given
- memory location. The encryption parameters for the resulting ciphertext
- correspond to the given parms_id. Dynamic memory allocations in the process
- are allocated from the memory pool pointed to by the given MemoryPoolHandle.
- 
- The second polynomial in result is randomly generated and are replaced
- with the seed used to compress output size. The output is in binary format
- and not human-readable.
- 
- @param paramsId The parms_id for the resulting ciphertext
- @throws ASL_LogicError if a secret key is not set
- @throws ASL_InvalidArgument if out is null or if size is too small to
- contain a SEALHeader
- @throws ASL_LogicError if the data to be saved is invalid, if compression
- mode is not supported, or if compression failed
- @throws ASL_RuntimeError if I/O operations failed
- @throws ASL_InvalidArgument if parms_id is not valid for the encryption
- parameters
- */
-- (NSData * _Nullable) encryptZeroSymmetricSaveWithParamsId:(ASLParametersIdType)paramsId
-                                                      error:(NSError **)error;
-
 @end
 
 NS_ASSUME_NONNULL_END

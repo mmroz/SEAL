@@ -211,7 +211,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  Returns a reference to the plaintext modulus.
  */
-@property (nonatomic, readonly, assign) ASLSmallModulus* plainModulus;
+@property (nonatomic, readonly, assign) ASLModulus* plainModulus;
 
 @end
 

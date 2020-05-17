@@ -33,12 +33,12 @@ class ASLEncryptorTests: XCTestCase {
     }
     
     func testEncryptZeroWithCipherText() throws {
-        let encryptedText = try ASLCipherText(context: createValidContext())
+        let encryptedText = try ASLCipherText(context: ASLSealContext.bfvDefault())
         XCTAssertNoThrow(try encryptor.encryptZero(with: encryptedText))
     }
     
     func testEncryptZeroWithCipherTextAndPool() throws {
-        let encryptedText = try ASLCipherText(context: createValidContext())
+        let encryptedText = try ASLCipherText(context: ASLSealContext.bfvDefault())
         XCTAssertNoThrow(try encryptor.encryptZero(with: encryptedText, pool: ASLMemoryPoolHandle.global()))
     }
     
@@ -48,7 +48,7 @@ class ASLEncryptorTests: XCTestCase {
     }
     
     func testEncryptZeroWithParametersIdWithPool() throws {
-        let encryptedText = try ASLCipherText(context: createValidContext())
+        let encryptedText = try ASLCipherText(context: ASLSealContext.bfvDefault())
         XCTAssertNoThrow(try encryptor.encryptZeroSymmetric(with: encryptedText, pool: .global()))
     }
     
@@ -64,30 +64,10 @@ class ASLEncryptorTests: XCTestCase {
         XCTAssertNoThrow(try encryptor.setSecretKey(ASLSecretKey()))
     }
     
-    func testEncryptSymmetricSaveWithPlainText() throws {
-       let data = try encryptor.encryptSymmetricSave(with: ASLPlainText())
-       XCTAssertNoThrow(try ASLPlainText(data: data, context: createValidContext()))
-    }
-    
-    func testEncryptZeroSymmetricSaveWithParamsId() throws {
-        let data = try encryptor.encryptZeroSymmetricSave(withParamsId: ASLParametersIdType(block: (4, 4, 4, 4)))
-       try ASLPlainText(data: data, context: createValidContext())
-    }
-    
-    private func createValidContext() -> ASLSealContext {
-        let parms = ASLEncryptionParameters(schemeType: .BFV)
-        let polyModulusDegree = 4096
-        try! parms.setPolynomialModulusDegree(polyModulusDegree)
-        try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try! parms.setPlainModulus(ASLSmallModulus(value: 1024))
-        return try! ASLSealContext(parms)
-    }
-    
     private func createEncryptor() -> ASLEncryptor {
-        let context = createValidContext()
+        let context = ASLSealContext.bfvDefault()
         let keygen = try! ASLKeyGenerator(context: context)
         let publicKey = keygen.publicKey
-        let secretKey = keygen.secretKey
         return try! ASLEncryptor(context: context, publicKey: publicKey)
     }
 }

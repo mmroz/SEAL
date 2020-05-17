@@ -8,35 +8,43 @@
 
 #import "ASLBaseConverter.h"
 
-#include "seal/util/baseconverter.h"
+#include "seal/util/rns.h"
 
 #import "ASLMemoryPoolHandle_Internal.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLRnsBase_Internal.h"
+#import "ASLModulus_Internal.h"
+#import "ASLBaseConverter_Internal.h"
+#import "NSString+CXXAdditions.h"
+#import "NSError+CXXAdditions.h"
 
 @implementation ASLBaseConverter {
     seal::util::BaseConverter * _baseConverter;
     BOOL _freeWhenDone;
 }
 
-// TODO - rename these because the call sies imply the wrong thing
+// TODO - finish this
 
 # pragma mark - Initialization
 
-+ (instancetype)baseConverterWithPool:(ASLMemoryPoolHandle *)pool {
-    auto converter = new seal::util::BaseConverter(pool.memoryPoolHandle);
-    return [[ASLBaseConverter alloc] initWithBaseConverter:converter freeWhenDone:YES];
-}
-
-+ (instancetype)baseConverterWithModuluses:(NSArray<ASLSmallModulus *> *)moduluses coefficientCount:(NSNumber *)coefficientCount smallPlainModulus:(ASLSmallModulus *)smallPlainModulus pool:(ASLMemoryPoolHandle *)pool {
++ (instancetype)baseConverterWithPool:(ASLMemoryPoolHandle *)pool
+                                iBase:(ASLRnsBase *)iBase
+                                oBase:(ASLRnsBase *)oBase error:(NSError **)error {
+    const seal::util::RNSBase sealOBase = *oBase.rnsBase;
+    seal::util::BaseConverter * converter = new seal::util::BaseConverter(*iBase.rnsBase, sealOBase, pool.memoryPoolHandle);
     
-    std::vector<seal::SmallModulus> smallModulusList;
-    for (ASLSmallModulus * const smallModulus in moduluses) {
-        smallModulusList.push_back(smallModulus.smallModulus);
+    try {
+        return [[ASLBaseConverter alloc] initWithBaseConverter:converter freeWhenDone:false];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
     }
-    
-    auto converter = new seal::util::BaseConverter(smallModulusList, coefficientCount.unsignedIntValue, smallPlainModulus.smallModulus, pool.memoryPoolHandle);
-    
-    return [[ASLBaseConverter alloc] initWithBaseConverter:converter freeWhenDone:YES];
 }
 
 // TODO - 💩 this class has its memory handled by another class
@@ -45,13 +53,16 @@
         delete _baseConverter;
         _baseConverter = nullptr;
     }
-
-    
 }
 
-#pragma mark - Properties - Internal
+#pragma mark - ASLRnsBase_Internal
 
-- (instancetype)initWithBaseConverter:(seal::util::BaseConverter *)baseConverter freeWhenDone:(BOOL)freeWhenDone {
+- (seal::util::BaseConverter *)baseConverter {
+    return _baseConverter;
+}
+
+- (instancetype)initWithBaseConverter:(seal::util::BaseConverter *)baseConverter
+                         freeWhenDone:(BOOL)freeWhenDone {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -63,112 +74,41 @@
     return self;
 }
 
-#pragma mark - Public Method
+# pragma mark - Properties
 
-- (void)generate:(NSArray<ASLSmallModulus *> *)coefficientBase coefficientCount:(NSNumber *)coefficientCount smallPlainModulus:(ASLSmallModulus *)smallPlainModulus {
-    
-    std::vector<seal::SmallModulus> smallModulusList;
-    for (ASLSmallModulus * const smallModulus in coefficientBase) {
-        smallModulusList.push_back(smallModulus.smallModulus);
-    }
-    
-    _baseConverter->generate(smallModulusList, coefficientCount.longLongValue, smallPlainModulus.smallModulus);
+- (ASLRnsBase *)iBase {
+    return [[ASLRnsBase alloc] initWithRnsBase:_baseConverter->ibase() freeWhenDone:true];
 }
 
-- (void)floorLastCoefficientModulusInplace:(NSNumber *)rnsPoly pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t value = rnsPoly.unsignedLongLongValue;
-    _baseConverter->floor_last_coeff_modulus_inplace(&value, pool.memoryPoolHandle);
+- (ASLRnsBase *)oBase {
+    return [[ASLRnsBase alloc] initWithRnsBase:_baseConverter->obase() freeWhenDone:true];
 }
 
-- (void)roundLastCoefficientModulusInplace:(NSNumber *)rnsPoly pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t value = rnsPoly.unsignedLongLongValue;
-    _baseConverter->round_last_coeff_modulus_inplace(&value, pool.memoryPoolHandle);
+- (size_t)iBaseSize {
+    return _baseConverter->ibase_size();
 }
 
-- (NSNumber *)fastBaseConverterQToBsk:(NSNumber *)input
-                    destination:(NSNumber *)destination
-                           pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-    std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->fastbconv(&inputValue, &destinationValue, pool.memoryPoolHandle);
-    return [[NSNumber alloc] initWithLong:destinationValue];
+- (size_t)oBaseSize {
+    return _baseConverter->obase_size();
 }
 
-- (NSNumber *)fastBaseConverterBskToQ:(NSNumber *)input
-                    destination:(NSNumber *)destination
-                           pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-     std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->fastbconv_sk(&inputValue, &destinationValue, pool.memoryPoolHandle);
-    return [[NSNumber alloc] initWithLong:destinationValue];
-    
+- (NSNumber *)fastConvert:(NSNumber *)input
+                   output:(NSNumber *)output
+                     pool:(ASLMemoryPoolHandle *)pool {
+    const std::uint64_t * inputPointer = new std::uint64_t(input.unsignedLongLongValue);
+    std::uint64_t * outputPointer = new std::uint64_t(output.unsignedLongLongValue);
+    _baseConverter->fast_convert(inputPointer, outputPointer, pool.memoryPoolHandle);
+    return [[NSNumber alloc] initWithUnsignedLongLong:static_cast<unsigned long long>(*outputPointer)];
 }
 
-- (NSNumber *)reduceBskPrimeToBsk:(NSNumber *)input
-                destination:(NSNumber *)destination {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-    std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->mont_rq(&inputValue, &destinationValue);
-    return [[NSNumber alloc] initWithLong:destinationValue];
-}
-
-- (NSNumber *)fastFloor:(NSNumber *)input
-      destination:(NSNumber *)destination
-             pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-    std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->fast_floor(&inputValue, &destinationValue, pool.memoryPoolHandle);
-    return [[NSNumber alloc] initWithLong:destinationValue];
-}
-
-- (NSNumber *)fastFloorFastBaseConverterQToBskPrime:(NSNumber *)input destination:(NSNumber *)destination pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-    std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->fastbconv_mtilde(&inputValue, &destinationValue, pool.memoryPoolHandle);
-    return [[NSNumber alloc] initWithLong:destinationValue];
-}
-
-- (NSNumber *)fastBaseConverterPlainGamma:(NSNumber *)input destination:(NSNumber *)destination pool:(ASLMemoryPoolHandle *)pool {
-    std::uint64_t inputValue = input.unsignedLongLongValue;
-    std::uint64_t destinationValue = destination.unsignedLongLongValue;
-    _baseConverter->fastbconv_plain_gamma(&inputValue, &destinationValue, pool.memoryPoolHandle);
-    return [[NSNumber alloc] initWithLong:destinationValue];
-}
-
-- (void)reset {
-    _baseConverter->reset();
-}
-
-- (BOOL)isGenerated {
-    return _baseConverter->is_generated();
-}
-
-- (NSNumber *)coefficientBaseMododulusCount {
-    return [[NSNumber alloc] initWithUnsignedLongLong:_baseConverter->coeff_base_mod_count()];
-}
-
-- (NSNumber *)auxBaseModCount {
-    return [[NSNumber alloc] initWithUnsignedLong:_baseConverter->aux_base_mod_count()];
-}
-
-- (NSNumber *)invertedGamma {
-    return [[NSNumber alloc] initWithUnsignedLong:_baseConverter->get_inv_gamma()];
-}
-
-- (ASLSmallModulus *)msk {
-    return [[ASLSmallModulus alloc] initWithSmallModulus:_baseConverter->get_msk()];
-}
-
-- (ASLSmallModulus *)mPrime {
-     return [[ASLSmallModulus alloc] initWithSmallModulus:_baseConverter->get_m_tilde()];
-}
-
-- (NSNumber *)mPrimeInverseCoefficientProductsModulusCoefficient {
-    return [[NSNumber alloc] initWithUnsignedLongLong:_baseConverter->get_inv_coeff_mod_mtilde()];
-}
-
-- (NSNumber *)inverseCoefficientModulusMPrime {
-    return [[NSNumber alloc] initWithUnsignedLongLong:_baseConverter->get_inv_coeff_mod_mtilde()];
+- (NSNumber *)fastConvertArray:(NSNumber *)input
+                          size:(size_t)size
+                        output:(NSNumber *)output
+                          pool:(ASLMemoryPoolHandle *)pool {
+    const std::uint64_t * inputPointer = new std::uint64_t(input.unsignedLongLongValue);
+    std::uint64_t * outputPointer = new std::uint64_t(output.unsignedLongLongValue);
+    _baseConverter->fast_convert_array(inputPointer, size, outputPointer, pool.memoryPoolHandle);
+    return [[NSNumber alloc] initWithUnsignedLongLong:static_cast<unsigned long long>(*outputPointer)];
 }
 
 @end

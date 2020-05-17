@@ -277,8 +277,8 @@
     return results;
 }
 
-- (size_t)coefficientModulusCount {
-    return _cipherText.coeff_mod_count();
+- (size_t)coefficientModulusSize {
+    return _cipherText.coeff_modulus_size();
 }
 
 - (size_t)polynomialModulusDegree {

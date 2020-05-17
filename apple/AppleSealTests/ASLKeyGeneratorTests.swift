@@ -15,12 +15,7 @@ class ASLKeyGeneratorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let parms = ASLEncryptionParameters(schemeType: .BFV)
-        let polyModulusDegree = 4096
-        try! parms.setPolynomialModulusDegree(polyModulusDegree)
-        try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try! parms.setPlainModulus(ASLSmallModulus(value: 1024))
-        let context = try! ASLSealContext(parms)
+        let context = ASLSealContext.bfvDefault()
         self.keyGenerator = try! ASLKeyGenerator(context: context)
     }
     
@@ -29,82 +24,56 @@ class ASLKeyGeneratorTests: XCTestCase {
         keyGenerator = nil
     }
     
-    func testCreateKeyGenerator() throws {
-        XCTAssertNoThrow(try ASLKeyGenerator(context: .bfvDefault()))
-    }
-    
-    func testCreateKeyGeneratorWithSecretKeyAndPublicKey() throws {
-        XCTAssertNoThrow(try ASLKeyGenerator(context: .bfvDefault(), secretKey: keyGenerator.secretKey, publicKey: keyGenerator.publicKey))
-    }
-    
-    func testKeyGeneratorWithSecretKey() throws {
-        XCTAssertNoThrow(try ASLKeyGenerator(context: .bfvDefault(), secretKey: keyGenerator.secretKey))
+    func testCreateWithSecretKey() throws {
+        let context = ASLSealContext.bfvDefault()
+        let keyGenerator = try! ASLKeyGenerator(context: context)
+        let secretKey = keyGenerator.secretKey
+        
+        XCTAssertNoThrow(try ASLKeyGenerator(context: context, secretKey: secretKey))
     }
     
     func testPublicKey() throws {
-        XCTAssertNoThrow(keyGenerator.secretKey)
+        XCTAssertEqual(keyGenerator.publicKey, ASLPublicKey())
     }
     
     func testSecretKey() throws {
-        XCTAssertNoThrow(keyGenerator.publicKey)
+        XCTAssertEqual(keyGenerator.secretKey, ASLSecretKey())
+    }
+    
+    func testRelinearizationKeysLocal() throws {
+        XCTAssertEqual(try keyGenerator.relinearizationKeysLocal(), ASLRelinearizationKeys())
     }
     
     func testRelinearizationKeys() throws {
-        XCTAssertNoThrow(try keyGenerator.relinearizationKeys())
+        // TODO - add
     }
     
-    func testGaloisKeys() throws {
-       let keygen = galoisKeyGenerator()
+    func testGaloisKeysLocalWithGaloisElements() throws {
+        let result = try keyGenerator.galoisKeysLocal(withGaloisElements: [1,2])
         
-        XCTAssertNoThrow(try keygen.galoisKeys())
+        XCTAssertEqual(result, ASLGaloisKeys())
     }
     
-    func testGaloisKeysWithElements() throws {
-        let keygen = galoisKeyGenerator()
+    func testGaloisKeysWithGaloisElements() throws {
+        // TODO - add
+    }
+    
+    func testGaloisKeysLocalWithSteps() throws {
+        let result = try keyGenerator.galoisKeysLocal(withSteps: [1,2])
         
-        XCTAssertNoThrow(try keygen.galoisKeys(withGaloisElements: []))
+        XCTAssertEqual(result, ASLGaloisKeys())
     }
     
     func testGaloisKeysWithSteps() throws {
-        let keygen = galoisKeyGenerator()
-        
-        XCTAssertNoThrow(try keygen.galoisKeys(withSteps: [1]))
+        // TODO - add
     }
     
-    func testRelinearizationKeysSave() throws {
-        let keyGenerator = try ASLKeyGenerator(context: .bfvDefault())
-        let data = try keyGenerator.relinearizationKeysSave()
-        let _ = try ASLRelinearizationKeys(data: data, context: .bfvDefault())
+    func testGaloisKeys() throws {
+        // TODO - add
     }
     
-    func testGaloisKeysSave() throws {
-        let keyGenerator = galoisKeyGenerator()
-        let data = try keyGenerator.galoisKeysSave()
-        let _ = try ASLGaloisKeys(data: data, context: galoisContext())
-    }
-    
-    func testGaloisKeysSaveWithSteps() throws {
-        let keyGenerator = galoisKeyGenerator()
-        let data = try keyGenerator.galoisKeysSave(withSteps: [1])
-        let _ = try ASLGaloisKeys(data: data, context: galoisContext())
-    }
-    
-    func testGaloisKeysSaveWithElements() throws {
-        let keyGenerator = galoisKeyGenerator()
-        let data = try keyGenerator.galoisKeysSave(withElements: [1])
-        let _ = try ASLGaloisKeys(data: data, context: galoisContext())
-    }
-    
-    private func galoisContext() -> ASLSealContext {
-        let parms = ASLEncryptionParameters(schemeType: .BFV)
-        let polyModulusDegree = 8192
-        try! parms.setPolynomialModulusDegree(polyModulusDegree)
-        try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try! parms.setPlainModulus(ASLPlainModulus.batching(polyModulusDegree, bitSize: 20))
-        return try! ASLSealContext(parms)
-    }
-    
-    private func galoisKeyGenerator() -> ASLKeyGenerator {
-        return try! ASLKeyGenerator(context: galoisContext())
+    func testGaloisKeysWithLocal() throws {
+        let result = try keyGenerator.galoisKeysLocal()
+        XCTAssertEqual(result, ASLGaloisKeys())
     }
 }

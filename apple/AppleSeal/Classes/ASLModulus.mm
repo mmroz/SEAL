@@ -1,34 +1,34 @@
 //
-//  ASLSmallModulus.m
+//  ASLModulus.m
 //  AppleSeal
 //
 //  Created by Mark Mroz on 2019-12-29.
 //  Copyright © 2019 Mark Mroz. All rights reserved.
 //
 
-#import "ASLSmallModulus.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLModulus.h"
+#import "ASLModulus_Internal.h"
 
 #include <array>
 #include <string>
 #include <stdexcept>
 #include <vector>
-#include "seal/smallmodulus.h"
+#include "seal/modulus.h"
 
 #import "NSError+CXXAdditions.h"
 
 
-@implementation ASLSmallModulus {
-	seal::SmallModulus _smallModulus;
+@implementation ASLModulus {
+	seal::Modulus _modulus;
 }
 
 #pragma mark - Initialization
 
-+ (instancetype)smallModulusWithValue:(uint64_t)value
++ (instancetype)modulusWithValue:(uint64_t)value
 								error:(NSError **)error {
 	try {
-		seal::SmallModulus const smallModulus = seal::SmallModulus(value);
-		return [[ASLSmallModulus alloc] initWithSmallModulus:smallModulus];
+		seal::Modulus const modulus = seal::Modulus(value);
+		return [[ASLModulus alloc] initWithModulus:modulus];
 	} catch (std::invalid_argument const &e) {
 		if (error != nil) {
             *error = [NSError ASL_SealInvalidParameter:e];
@@ -41,9 +41,9 @@
 #pragma mark - NSCoding
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-	std::size_t const lengthUpperBound = _smallModulus.save_size(seal::Serialization::compr_mode_default);
+	std::size_t const lengthUpperBound = _modulus.save_size(seal::Serialization::compr_mode_default);
 	NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
-	std::size_t const actualLength = _smallModulus.save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
+	std::size_t const actualLength = _modulus.save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
 	[data setLength:actualLength];
 	[coder encodeDataObject:data];
 }
@@ -54,17 +54,17 @@
         return nil;
     }
 
-    seal::SmallModulus encodedSmallModulus;
+    seal::Modulus encodedModulus;
     std::byte const * bytes = static_cast<std::byte const *>(encodedValueData.bytes);
     std::size_t const length = static_cast<std::size_t const>(encodedValueData.length);
-    encodedSmallModulus.load(bytes, length);
-    return [self initWithSmallModulus:encodedSmallModulus];
+    encodedModulus.load(bytes, length);
+    return [self initWithModulus:encodedModulus];
 }
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	return [[ASLSmallModulus allocWithZone:zone] initWithSmallModulus:_smallModulus];
+	return [[ASLModulus allocWithZone:zone] initWithModulus:_modulus];
 }
 
 #pragma mark - NSObject
@@ -79,40 +79,40 @@
 	  return YES;
 	}
 
-	if (![object isKindOfClass:[ASLSmallModulus class]]) {
+	if (![object isKindOfClass:[ASLModulus class]]) {
 	  return NO;
 	}
 
-	return [self isEqualToSmallModulus:(ASLSmallModulus *)object];
+	return [self isEqualToModulus:(ASLModulus *)object];
 }
 
 #pragma mark - Public Methods
 
-- (BOOL)isEqualToSmallModulus:(ASLSmallModulus *)other {
+- (BOOL)isEqualToModulus:(ASLModulus *)other {
 	NSParameterAssert(other != nil);
 	if (other == nil) {
 		return NO;
 	} else {
-		return _smallModulus == other->_smallModulus;
+		return _modulus == other->_modulus;
 	}
 }
 
-- (NSComparisonResult)compare:(ASLSmallModulus *)other {
+- (NSComparisonResult)compare:(ASLModulus *)other {
 	NSParameterAssert(other != nil);
 	if (other == nil) {
 		return NSOrderedSame;
-	} else if (_smallModulus == other->_smallModulus) {
+	} else if (_modulus == other->_modulus) {
 		return NSOrderedSame;
-	} else if (_smallModulus < other->_smallModulus) {
+	} else if (_modulus < other->_modulus) {
 		return NSOrderedAscending;
 	} else {
 		return NSOrderedDescending;
 	}
 }
 
-- (ASLSmallModulusConstRatio)constRatio {
-	std::array<unsigned long long, 3> const array = _smallModulus.const_ratio();
-	return ASLSmallModulusConstRatio {
+- (ASLModulusConstRatio)constRatio {
+	std::array<unsigned long long, 3> const array = _modulus.const_ratio();
+	return ASLModulusConstRatio {
 		.floor = array[0],
 		.value = array[1],
 		.remainder = array[2],
@@ -122,48 +122,48 @@
 #pragma mark - Properties
 
 - (NSInteger)bitCount {
-	return _smallModulus.bit_count();
+	return _modulus.bit_count();
 }
 
 - (size_t)uint64Count {
-	return _smallModulus.uint64_count();
+	return _modulus.uint64_count();
 }
 
 - (uint64_t const *)data {
-	return _smallModulus.data();
+	return _modulus.data();
 }
 
 - (uint64_t)uint64Value {
-	return _smallModulus.value();
+	return _modulus.value();
 }
 
 - (BOOL)isZero {
-	return _smallModulus.is_zero();
+	return _modulus.is_zero();
 }
 
 - (BOOL)isPrime {
-	return _smallModulus.is_prime();
+	return _modulus.is_prime();
 }
 
 #pragma mark - Public Methods
 
 - (void)setUInt64Value:(uint64_t)value {
-    _smallModulus = value;
+    _modulus = value;
 }
 
 #pragma mark - Properties - Internal
 
-- (seal::SmallModulus)smallModulus {
-	return _smallModulus;
+- (seal::Modulus)modulus {
+	return _modulus;
 }
 
-- (instancetype)initWithSmallModulus:(seal::SmallModulus)smallModulus {
+- (instancetype)initWithModulus:(seal::Modulus)modulus {
     self = [super init];
     if (self == nil) {
         return nil;
     }
     
-    _smallModulus = std::move(smallModulus);
+    _modulus = std::move(modulus);
 
     return self;
 }

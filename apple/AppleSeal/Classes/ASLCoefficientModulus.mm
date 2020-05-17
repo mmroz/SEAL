@@ -11,7 +11,7 @@
 #include "seal/modulus.h"
 
 #import "ASLSealContext.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLModulus_Internal.h"
 #import "NSString+CXXAdditions.h"
 #import "NSError+CXXAdditions.h"
 
@@ -41,17 +41,17 @@ static seal::sec_level_type sealSecurityLevelFromASLSecurityLevel(ASLSecurityLev
     return seal::CoeffModulus::MaxBitCount(polynomialModulusDegree);
 }
 
-+ (NSArray<ASLSmallModulus*>*)bfvDefault:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>*)bfvDefault:(size_t)polynomialModulusDegree
                            securityLevel:(ASLSecurityLevel)securityLevel
                                    error:(NSError **)error
 {
     try {
-        std::vector<seal::SmallModulus> defaultSmallModuluses = seal::CoeffModulus::BFVDefault(polynomialModulusDegree, sealSecurityLevelFromASLSecurityLevel(securityLevel));
+        std::vector<seal::Modulus> defaultModuluses = seal::CoeffModulus::BFVDefault(polynomialModulusDegree, sealSecurityLevelFromASLSecurityLevel(securityLevel));
         NSMutableArray * aslSmallModulses = [[NSMutableArray alloc] init];
         
-        for (seal::SmallModulus& modulus: defaultSmallModuluses) {
-            ASLSmallModulus* aslSmallModulus = [[ASLSmallModulus alloc] initWithSmallModulus:modulus];
-            [aslSmallModulses addObject:aslSmallModulus];
+        for (seal::Modulus& modulus: defaultModuluses) {
+            ASLModulus* aslModulus = [[ASLModulus alloc] initWithModulus:modulus];
+            [aslSmallModulses addObject:aslModulus];
         }
         return aslSmallModulses;
     } catch (std::invalid_argument const &e) {
@@ -63,17 +63,17 @@ static seal::sec_level_type sealSecurityLevelFromASLSecurityLevel(ASLSecurityLev
     return nil;
 }
 
-+ (NSArray<ASLSmallModulus*>*)bfvDefault:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>*)bfvDefault:(size_t)polynomialModulusDegree
                                    error:(NSError **)error {
     
     try {
         
-        std::vector<seal::SmallModulus> defaultSmallModuluses =  seal::CoeffModulus::BFVDefault(polynomialModulusDegree);
+        std::vector<seal::Modulus> defaultModuluses =  seal::CoeffModulus::BFVDefault(polynomialModulusDegree);
         NSMutableArray * aslSmallModulses = [[NSMutableArray alloc] init];
         
-        for (seal::SmallModulus& modulus: defaultSmallModuluses) {
-            ASLSmallModulus* aslSmallModulus = [[ASLSmallModulus alloc] initWithSmallModulus:modulus];
-            [aslSmallModulses addObject:aslSmallModulus];
+        for (seal::Modulus& modulus: defaultModuluses) {
+            ASLModulus* aslModulus = [[ASLModulus alloc] initWithModulus:modulus];
+            [aslSmallModulses addObject:aslModulus];
         }
         return aslSmallModulses;
     } catch (std::invalid_argument const &e) {
@@ -85,7 +85,7 @@ static seal::sec_level_type sealSecurityLevelFromASLSecurityLevel(ASLSecurityLev
     return nil;
 }
 
-+ (NSArray<ASLSmallModulus*>*)create:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>*)create:(size_t)polynomialModulusDegree
                             bitSizes:(NSArray<NSNumber*>*)bitSizes
                                error:(NSError **)error{
     
@@ -95,12 +95,12 @@ static seal::sec_level_type sealSecurityLevelFromASLSecurityLevel(ASLSecurityLev
     }
     
     try {
-           std::vector<seal::SmallModulus> defaultSmallModuluses =  seal::CoeffModulus::Create(polynomialModulusDegree, intBitSizes);
+           std::vector<seal::Modulus> defaultModuluses =  seal::CoeffModulus::Create(polynomialModulusDegree, intBitSizes);
            NSMutableArray * aslSmallModulses = [[NSMutableArray alloc] init];
            
-           for (seal::SmallModulus& modulus: defaultSmallModuluses) {
-               ASLSmallModulus* aslSmallModulus = [[ASLSmallModulus alloc] initWithSmallModulus:modulus];
-               [aslSmallModulses addObject:aslSmallModulus];
+           for (seal::Modulus& modulus: defaultModuluses) {
+               ASLModulus* aslModulus = [[ASLModulus alloc] initWithModulus:modulus];
+               [aslSmallModulses addObject:aslModulus];
            }
            return aslSmallModulses;
        } catch (std::invalid_argument const &e) {

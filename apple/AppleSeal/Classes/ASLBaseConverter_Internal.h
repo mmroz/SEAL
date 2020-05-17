@@ -9,13 +9,15 @@
 
 #import "ASLBaseConverter.h"
 
-#include "seal/util/baseconverter.h"
+#include "seal/util/rns.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ASLBaseConverter ()
 
-- (instancetype)initWithBaseConverter:(const seal::util::BaseConverter *)baseConverter freeWhenDone:(BOOL)freeWhenDone;
+- (instancetype)initWithBaseConverter:(seal::util::BaseConverter *)baseConverter freeWhenDone:(BOOL)freeWhenDone;
+
+@property (nonatomic, assign, readonly) seal::util::BaseConverter * baseConverter;
 
 @end
 

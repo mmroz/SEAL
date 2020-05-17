@@ -24,11 +24,11 @@ class ASLCoefficientModulusTests: XCTestCase {
     
     func testBFVDefaults() throws {
         let expectedResults = [
-            try ASLSmallModulus(value: 8796092858369),
-            try ASLSmallModulus(value: 8796092792833),
-            try ASLSmallModulus(value: 17592186028033),
-            try ASLSmallModulus(value: 17592185438209),
-            try ASLSmallModulus(value: 17592184717313)
+            try ASLModulus(value: 8796092858369),
+            try ASLModulus(value: 8796092792833),
+            try ASLModulus(value: 17592186028033),
+            try ASLModulus(value: 17592185438209),
+            try ASLModulus(value: 17592184717313)
         ]
         
         XCTAssertEqual(expectedResults, try ASLCoefficientModulus.bfvDefault(8192))
@@ -40,29 +40,29 @@ class ASLCoefficientModulusTests: XCTestCase {
     
     func testBFVDefaultsWithSecurityLevel() throws {
         let expectedTC128Results = [
-            try ASLSmallModulus(value: 8796092858369),
-            try ASLSmallModulus(value: 8796092792833),
-            try ASLSmallModulus(value: 17592186028033),
-            try ASLSmallModulus(value: 17592185438209),
-            try ASLSmallModulus(value: 17592184717313)
+            try ASLModulus(value: 8796092858369),
+            try ASLModulus(value: 8796092792833),
+            try ASLModulus(value: 17592186028033),
+            try ASLModulus(value: 17592185438209),
+            try ASLModulus(value: 17592184717313)
         ]
         
         XCTAssertEqual(expectedTC128Results, try ASLCoefficientModulus.bfvDefault(8192, securityLevel: .TC128))
         
         let expectedTC192Results = [
-            try ASLSmallModulus(value: 274877562881),
-            try ASLSmallModulus(value: 274877202433),
-            try ASLSmallModulus(value: 274877153281),
-            try ASLSmallModulus(value: 274877022209)
+            try ASLModulus(value: 274877562881),
+            try ASLModulus(value: 274877202433),
+            try ASLModulus(value: 274877153281),
+            try ASLModulus(value: 274877022209)
         ]
         
         
         XCTAssertEqual(expectedTC192Results, try ASLCoefficientModulus.bfvDefault(8192, securityLevel: .TC192))
         
         let expectedTC256Results = [
-            try ASLSmallModulus(value: 549755731969),
-            try ASLSmallModulus(value: 549755486209),
-            try ASLSmallModulus(value: 1099511480321)
+            try ASLModulus(value: 549755731969),
+            try ASLModulus(value: 549755486209),
+            try ASLModulus(value: 1099511480321)
         ]
         
         XCTAssertEqual(expectedTC256Results, try ASLCoefficientModulus.bfvDefault(8192, securityLevel: .TC256))

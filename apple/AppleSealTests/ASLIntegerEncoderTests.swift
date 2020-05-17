@@ -17,7 +17,7 @@ final class ASLIntegerEncoderTests: XCTestCase {
         let polyModulusDegree = 4096
         try! parms.setPolynomialModulusDegree(polyModulusDegree)
         try! parms.setCoefficientModulus(ASLCoefficientModulus.bfvDefault(polyModulusDegree))
-        try! parms.setPlainModulus(ASLSmallModulus(value: 512))
+        try! parms.setPlainModulus(ASLModulus(value: 512))
         let context = try! ASLSealContext(parms)
         encoder = try! ASLIntegerEncoder(context: context)
     }

@@ -1,23 +1,23 @@
 //
-//  ASLSmallModulus_Internal.h
+//  ASLModulus_Internal.h
 //  AppleSeal
 //
 //  Created by Mark Mroz on 2019-12-29.
 //  Copyright © 2019 Mark Mroz. All rights reserved.
 //
 
-#import "ASLSmallModulus.h"
+#import "ASLModulus.h"
 
 #include "seal/context.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ASLSmallModulus ()
+@interface ASLModulus ()
 
 /// Returns a copy of the small modulus backing the receiver.
-@property (nonatomic, assign, readonly) seal::SmallModulus smallModulus;
+@property (nonatomic, assign, readonly) seal::Modulus modulus;
 
-- (instancetype)initWithSmallModulus:(seal::SmallModulus)smallModulus;
+- (instancetype)initWithModulus:(seal::Modulus)modulus;
 
 @end
 

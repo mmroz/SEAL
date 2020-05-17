@@ -12,202 +12,49 @@ import AppleSeal
 import XCTest
 
 class ASLBaseConverterTests: XCTestCase {
-    func testCreateWithMemoryPoolHandle() {
-        
-        let _ = ASLBaseConverter(pool: ASLMemoryPoolHandle(clearOnDestruction: true))
-    }
     
-    func testCreate() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let _ = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-    }
+    // TODO
     
-    func testGenerate() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.generate([try ASLSmallModulus(value: 2)], coefficientCount: 4, smallPlainModulus: try ASLSmallModulus(value: 4))
-    }
-    
-// TODO
-//    func testFloorLastCoeffModulusInplace() throws {
-//        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-//        let smallModuluses = [try ASLSmallModulus(value: 2)]
-//        let plainModulus = try ASLSmallModulus(value: 4)
+//    private let modulus = try! ASLCoefficientModulus.create(8192, bitSizes: [40, 40, 40, 40, 40])
 //
-//        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-//
-//        converter.floorLastCoefficientModulusInplace(5, pool: memoryPool)
+//    func testCreate() throws {
+//        let modulus = try ASLCoefficientModulus.create(8192, bitSizes: [40, 40, 40, 40, 40])
+//        let iBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        let oBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        XCTAssertNoThrow(try ASLBaseConverter(pool: .global(), iBase: iBase, oBase: oBase))
 //    }
-
-// TODO
-//    func testRoundLastCoefficientModulusInplacet() throws {
-//        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-//        let smallModuluses = [try ASLSmallModulus(value: 2)]
-//        let plainModulus = try ASLSmallModulus(value: 4)
 //
-//        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-//
-//        converter.roundLastCoefficientModulusInplace(5, pool: memoryPool)
+//    func testIBase() throws {
+//        let iBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        XCTAssertEqual(createConverter().iBase, iBase)
 //    }
-    
-    func testFastBaseConverterQToBsk() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.fastBaseConverterQ(toBsk: 4, destination: 2, pool: memoryPool)
-    }
-    
-    func testFastBaseConverterBskToQ() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.fastBaseConverterBsk(toQ: 4, destination: 2, pool: memoryPool)
-    }
-    
-    func testReduceBskPrimeToBsk() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.reduceBskPrime(toBsk: 4, destination: 2)
-    }
-    
-    func testFastFloor() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.fastFloor(4, destination: 2, pool: memoryPool)
-    }
-    
-    func testFastFloorFastBaseConverterQToBskPrime() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.fastFloorFastBaseConverterQ(toBskPrime: 4, destination: 2, pool: memoryPool)
-    }
-    
-    func testFastBaseConverterPlainGamma() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.fastBaseConverterPlainGamma(4, destination: 2, pool: memoryPool)
-    }
-    
-    func testReset() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        converter.reset()
-    }
-    
-    func testIsGenerated() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertFalse(converter.isGenerated)
-        
-        converter.generate(smallModuluses, coefficientCount: 2, smallPlainModulus: plainModulus)
-        
-        XCTAssertFalse(converter.isGenerated)
-    }
-    
-    func testCoefficientBaseMododulusCount() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.coefficientBaseMododulusCount, 0)
-    }
-    
-    func testAuxBaseModCount() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.auxBaseModCount, 0)
-    }
-    
-    func testInvertedGamma() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.invertedGamma, 0)
-    }
-    
-    func testMsk() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.msk, try ASLSmallModulus(value: 4))
-    }
-    
-    func testPrime() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.mPrime, try ASLSmallModulus(value: 4))
-    }
-    
-    func testMPrimeInverseCoefficientProductsModulusCoefficient() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.mPrimeInverseCoefficientProductsModulusCoefficient, 0)
-    }
-    
-    func testInverseCoefficientModulusMPrime() throws {
-        let memoryPool = ASLMemoryPoolHandle(clearOnDestruction: true)
-        let smallModuluses = [try ASLSmallModulus(value: 2)]
-        let plainModulus = try ASLSmallModulus(value: 4)
-        
-        let converter = ASLBaseConverter(moduluses: smallModuluses, coefficientCount: 4, smallPlainModulus: plainModulus, pool: memoryPool)
-        
-        XCTAssertEqual(converter.inverseCoefficientModulusMPrime, 0)
-    }
+//
+//    func testOBase() throws {
+//        let iBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        XCTAssertEqual(createConverter().iBase, iBase)
+//    }
+//
+//    func testIBaseSize() throws {
+//        XCTAssertEqual(createConverter().iBaseSize, 2)
+//    }
+//
+//    func testOBaseSize() throws {
+//        XCTAssertEqual(createConverter().oBaseSize, 2)
+//    }
+//
+//    func testFastConvert() throws {
+//        let result = createConverter().fastConvert(2, output: 2, pool: .global())
+//        XCTAssertEqual(result, 3)
+//    }
+//
+//    func testFastConvertArray() throws {
+//        let result = createConverter().fastConvertArray(2, size: 2, output: 2, pool: .global())
+//        XCTAssertEqual(result, 3)
+//    }
+//
+//    private func createConverter() -> ASLBaseConverter {
+//        let iBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        let oBase = ASLRnsBase(moduluses: modulus, pool: .global())
+//        return try! XCTUnwrap(try ASLBaseConverter(pool: .global(), iBase: iBase, oBase: oBase))
+//    }
 }

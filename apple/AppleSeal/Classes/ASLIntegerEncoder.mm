@@ -13,7 +13,7 @@
 #import  "ASLSealContext_Internal.h"
 #import  "ASLPlainText_Internal.h"
 #import "ASLBigUInt_Internal.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLModulus_Internal.h"
 #import "NSString+CXXAdditions.h"
 #import "NSError+CXXAdditions.h"
 
@@ -191,8 +191,8 @@
     return [[ASLPlainText alloc] initWithPlainText:_integerEncoder->encode(uInt32Value)];
 }
 
-- (ASLSmallModulus *)plainModulus {
-    return [[ASLSmallModulus alloc]initWithSmallModulus:_integerEncoder->plain_modulus()];
+- (ASLModulus *)plainModulus {
+    return [[ASLModulus alloc]initWithModulus:_integerEncoder->plain_modulus()];
 }
 
 @end

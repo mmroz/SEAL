@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ASLSmallModulus;
+@class ASLModulus;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -98,12 +98,12 @@ typedef NS_CLOSED_ENUM(NSInteger, ASLSchemeType) {
 /*!
  Returns a const reference to the currently set coefficient modulus parameter.
  */
-@property (nonatomic, assign, readonly) NSArray<ASLSmallModulus *> *coefficientModulus;
+@property (nonatomic, assign, readonly) NSArray<ASLModulus *> *coefficientModulus;
 
 /*!
  Returns a const reference to the currently set plaintext modulus parameter.
  */
-@property (nonatomic, assign, readonly) ASLSmallModulus *plainModulus;
+@property (nonatomic, assign, readonly) ASLModulus *plainModulus;
 
 /*!
  Returns the encryption scheme type.
@@ -128,7 +128,7 @@ typedef NS_CLOSED_ENUM(NSInteger, ASLSchemeType) {
 /*!
  Sets the coefficient modulus parameter. The coefficient modulus consists
  of a list of distinct prime numbers, and is represented by a vector of
- SmallModulus objects. The coefficient modulus directly affects the size
+ Modulus objects. The coefficient modulus directly affects the size
  of ciphertext elements, the amount of computation that the scheme can
  perform (bigger is better), and the security level (bigger is worse). In
  Microsoft SEAL each of the prime numbers in the coefficient modulus must
@@ -139,12 +139,12 @@ typedef NS_CLOSED_ENUM(NSInteger, ASLSchemeType) {
  is non-empty
  @throws ASL_SealInvalidParameter if size of coefficientModulus is invalid
  */
-- (BOOL)setCoefficientModulus:(NSArray<ASLSmallModulus *>*)coefficientModulus
+- (BOOL)setCoefficientModulus:(NSArray<ASLModulus *>*)coefficientModulus
                         error:(NSError **)error;
 
 /*!
  Sets the plaintext modulus parameter. The plaintext modulus is an integer
- modulus represented by the SmallModulus class. The plaintext modulus
+ modulus represented by the Modulus class. The plaintext modulus
  determines the largest coefficient that plaintext polynomials can represent.
  It also affects the amount of computation that the scheme can perform
  (bigger is worse). In Microsoft SEAL the plaintext modulus can be at most
@@ -156,13 +156,13 @@ typedef NS_CLOSED_ENUM(NSInteger, ASLSchemeType) {
  @throws ASLSealErrorCodeLogicError if scheme is not ASLSchemeTypeBFV and plainModulus
  is non-zero
  */
-- (BOOL)setPlainModulus:(ASLSmallModulus *)plainModulus
+- (BOOL)setPlainModulus:(ASLModulus *)plainModulus
                   error:(NSError **)error;
 
 /*!
  Sets the plaintext modulus parameter. The plaintext modulus is an integer
- modulus represented by the SmallModulus class. This constructor instead
- takes a std::uint64_t and automatically creates the SmallModulus object.
+ modulus represented by the Modulus class. This constructor instead
+ takes a std::uint64_t and automatically creates the Modulus object.
  The plaintext modulus determines the largest coefficient that plaintext
  polynomials can represent. It also affects the amount of computation that
  the scheme can perform (bigger is worse). In Microsoft SEAL the plaintext

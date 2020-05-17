@@ -10,20 +10,20 @@
 
 #include "seal/modulus.h"
 
-#import "ASLSmallModulus.h"
-#import "ASLSmallModulus_Internal.h"
+#import "ASLModulus.h"
+#import "ASLModulus_Internal.h"
 #import "NSError+CXXAdditions.h"
 
 @implementation ASLPlainModulus
 
 #pragma mark - Public Static Methods
 
-+ (ASLSmallModulus*)batching:(size_t)polynomialModulusDegree
++ (ASLModulus*)batching:(size_t)polynomialModulusDegree
 					 bitSize:(int)bitSize
 					   error:(NSError **)error {
     try {
-        seal::SmallModulus modulus = seal::PlainModulus::Batching(polynomialModulusDegree, bitSize);
-        return [[ASLSmallModulus alloc] initWithSmallModulus:modulus];
+        seal::Modulus modulus = seal::PlainModulus::Batching(polynomialModulusDegree, bitSize);
+        return [[ASLModulus alloc] initWithModulus:modulus];
     }  catch (std::invalid_argument const &e) {
         if (error != nil) {
             *error = [NSError ASL_SealInvalidParameter:e];
@@ -38,7 +38,7 @@
     return nil;
 }
 
-+ (NSArray<ASLSmallModulus*>*)batching:(size_t)polynomialModulusDegree
++ (NSArray<ASLModulus*>*)batching:(size_t)polynomialModulusDegree
 							  bitSizes:(NSArray<NSNumber*>*)bitSizes
 								 error:(NSError **)error {
 	
@@ -47,13 +47,13 @@
 		intBitSizes.push_back(bitSize.intValue);
 	}
 	
-	std::vector<seal::SmallModulus> defaultSmallModuluses =  seal::PlainModulus::Batching(polynomialModulusDegree, intBitSizes);
+	std::vector<seal::Modulus> defaultModuluses =  seal::PlainModulus::Batching(polynomialModulusDegree, intBitSizes);
 	NSMutableArray * aslSmallModulses = [[NSMutableArray alloc] init];
 	
     try {
-        for (seal::SmallModulus& modulus: defaultSmallModuluses) {
-            ASLSmallModulus* aslSmallModulus = [[ASLSmallModulus alloc] initWithSmallModulus:modulus];
-            [aslSmallModulses addObject:aslSmallModulus];
+        for (seal::Modulus& modulus: defaultModuluses) {
+            ASLModulus* aslModulus = [[ASLModulus alloc] initWithModulus:modulus];
+            [aslSmallModulses addObject:aslModulus];
         }
         return aslSmallModulses;
     }  catch (std::invalid_argument const &e) {

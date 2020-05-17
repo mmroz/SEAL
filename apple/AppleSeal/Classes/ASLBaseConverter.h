@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ASLSmallModulus.h"
+#import "ASLModulus.h"
 #import "ASLMemoryPoolHandle.h"
+#import "ASLRnsBase.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,117 +19,31 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)baseConverterWithPool:(ASLMemoryPoolHandle *)pool;
+# pragma mark - Initialization
 
-+ (instancetype)baseConverterWithModuluses:(NSArray<ASLSmallModulus *>*)moduluses
-                          coefficientCount:(NSNumber *)coefficientCount
-                         smallPlainModulus:(ASLSmallModulus *)smallPlainModulus
-                                      pool:(ASLMemoryPoolHandle *)pool;
++ (instancetype _Nullable)baseConverterWithPool:(ASLMemoryPoolHandle *)pool
+                                iBase:(ASLRnsBase *)iBase
+                                oBase:(ASLRnsBase *)oBase
+                                error:(NSError **)error;
 
--(void)generate:(NSArray<ASLSmallModulus *>*)coefficientBase
-coefficientCount:(NSNumber *)coefficientCount
-smallPlainModulus:(ASLSmallModulus *)smallPlainModulus;
+# pragma mark - Properties
 
--(void)floorLastCoefficientModulusInplace:(NSNumber *)rnsPoly
-                                     pool:(ASLMemoryPoolHandle *)pool;
+@property (nonatomic, readonly, assign) size_t iBaseSize;
 
-// TODO - fix this
-// floor_last_coeff_modulus_ntt_inplace
+@property (nonatomic, readonly, assign) size_t oBaseSize;
 
--(void)roundLastCoefficientModulusInplace:(NSNumber *)rnsPoly
-                                     pool:(ASLMemoryPoolHandle *)pool;
+@property (nonatomic, readonly, assign) ASLRnsBase* iBase;
 
-// TODO - fix this
-// round_last_coeff_modulus_ntt_inplace
+@property (nonatomic, readonly, assign) ASLRnsBase* oBase;
 
-/*!
- Fast base converter from q to Bsk
- */
--(NSNumber * _Nullable)fastBaseConverterQToBsk:(NSNumber *)input
-                   destination:(NSNumber *)destination
-                          pool:(ASLMemoryPoolHandle *)pool;
+-(NSNumber *)fastConvert:(NSNumber*)input
+                  output:(NSNumber*)output
+                    pool:(ASLMemoryPoolHandle *)pool;
 
-/*!
- Fast base converter from Bsk to q
- */
--(NSNumber * _Nullable)fastBaseConverterBskToQ:(NSNumber *)input
-                   destination:(NSNumber *)destination
-                          pool:(ASLMemoryPoolHandle *)pool;
-
-/*!
- Reduction from Bsk U {m_tilde} to Bsk
- */
--(NSNumber * _Nullable)reduceBskPrimeToBsk:(NSNumber *)input
-               destination:(NSNumber *)destination;
-
-/*!
- Fast base converter from q U Bsk to Bsk
- */
--(NSNumber * _Nullable)fastFloor:(NSNumber *)input
-     destination:(NSNumber *)destination
-            pool:(ASLMemoryPoolHandle *)pool;
-
-/*!
- Fast base converter from q to Bsk U {m_tilde}
- */
--(NSNumber * _Nullable)fastFloorFastBaseConverterQToBskPrime:(NSNumber *)input
-                                 destination:(NSNumber *)destination
-                                        pool:(ASLMemoryPoolHandle *)pool;
-
-/*!
- Fast base converter from q to plain_modulus U {gamma}
- */
--(NSNumber * _Nullable)fastBaseConverterPlainGamma:(NSNumber *)input
-                       destination:(NSNumber *)destination
-                              pool:(ASLMemoryPoolHandle *)pool;
-
--(void)reset;
-
-@property (nonatomic, readonly, assign, getter=isGenerated) BOOL generated;
-
-@property (nonatomic, readonly, assign) NSNumber* coefficientBaseMododulusCount;
-
-@property (nonatomic, readonly, assign) NSNumber* auxBaseModCount;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* plainGammaProduct;
-
-// TODO - Pointer
-// @property (nonatomic, readonly, assign) NSNumber* negativeInverseCoefficient;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* plainGammaArray;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* coefficientProductsArray;
-
-@property (nonatomic, readonly, assign) NSNumber* invertedGamma;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* bskSmallNttTables;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* bskBaseModCount;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* bskModArray;
-
-@property (nonatomic, readonly, assign) ASLSmallModulus* msk;
-
-@property (nonatomic, readonly, assign) ASLSmallModulus* mPrime;
-
-@property (nonatomic, readonly, assign) NSNumber* mPrimeInverseCoefficientProductsModulusCoefficient;
-
-@property (nonatomic, readonly, assign) NSNumber* inverseCoefficientModulusMPrime;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* inverseCoefficientModulusCoefficientArray;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* inverseLastCoefficientModulusArray;
-
-// TODO - Pointer
-//@property (nonatomic, readonly, assign) NSNumber* coefficientBaseProductsModdulusMsk;
+-(NSNumber *)fastConvertArray:(NSNumber*)input
+                    size:(size_t)size
+                       output:(NSNumber*)output
+                         pool:(ASLMemoryPoolHandle *)pool;
 
 @end
 
