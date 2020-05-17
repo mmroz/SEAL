@@ -173,7 +173,7 @@ class Encoders: XCTestCase {
         let keygen = try ASLKeyGenerator(context: context)
         let publicKey = keygen.publicKey
         let secretKey = keygen.secretKey
-        let relinKeys = try keygen.relinearizationKeys()
+        let relinKeys = try keygen.relinearizationKeysLocal()
         let encryptor = try ASLEncryptor(context: context, publicKey: publicKey)
         let evaluator = try ASLEvaluator(context)
         let decryptor = try ASLDecryptor(context: context, secretKey: secretKey)
@@ -330,7 +330,7 @@ class Encoders: XCTestCase {
         let keygen = try ASLKeyGenerator(context: context)
         let publicKey = keygen.publicKey
         let secretKey = keygen.secretKey
-        let relinKeys = try keygen.relinearizationKeys()
+        let relinKeys = try keygen.relinearizationKeysLocal()
         
         /*
          We also set up an Encryptor, Evaluator, and Decryptor as usual.

@@ -329,7 +329,7 @@ class BFVBasics: XCTestCase {
          */
         print()
         print("Generate relinearization keys.")
-        let relinKeys = try keygen.relinearizationKeys()
+        let relinKeys = try keygen.relinearizationKeysLocal()
         
         /*
          We now repeat the computation relinearizing after each multiplication.

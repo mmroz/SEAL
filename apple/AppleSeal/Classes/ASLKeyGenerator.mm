@@ -16,7 +16,9 @@
 #import "ASLRelinearizationKeys_Internal.h"
 #import "ASLGaloisKeys_Internal.h"
 #import "ASLKeyGenerator_Internal.h"
+#import "ASLSerializable_Internal.h"
 #import "NSError+CXXAdditions.h"
+#import "ASLSerializable.h"
 
 @implementation ASLKeyGenerator {
     seal::KeyGenerator* _keyGenerator;
@@ -98,9 +100,20 @@
     return nil;
 }
 
-- (ASLRelinearizationKeys *)relinearizationKeys:(NSError **)error {
-    // TODO - return Serializable key
-    //_keyGenerator->relin_keys();
+- (ASLSerializable<ASLRelinearizationKeys *> *)relinearizationKeys:(NSError **)error {
+    try {
+        return [[ASLSerializable alloc] initWithRelinearizationKeys:_keyGenerator->relin_keys()];
+    }  catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    }
     return nil;
 }
 
@@ -127,8 +140,25 @@
 }
 
 
-- (ASLGaloisKeys *)galoisKeysWithGaloisElements:(NSArray<NSNumber *> *)galoisElements error:(NSError **)error {
-    // TODO - return Serializable key
+- (ASLSerializable<ASLGaloisKeys *> *)galoisKeysWithGaloisElements:(NSArray<NSNumber *> *)galoisElements error:(NSError **)error {
+    NSParameterAssert(galoisElements != nil);
+    std::vector<std::uint32_t> galoisElementList;
+    for (NSNumber * const element in galoisElements) {
+        galoisElementList.push_back(element.unsignedIntValue);
+    }
+    try {
+        return [[ASLSerializable alloc] initWithGaloisKey:_keyGenerator->galois_keys(galoisElementList)];
+    }  catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    }
     return nil;
 }
 
@@ -160,9 +190,32 @@
     return nil;
 }
 
-- (ASLGaloisKeys * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
+- (ASLSerializable<ASLGaloisKeys *> * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
                                             error:(NSError **)error {
-    // TODO - return Serializable key
+    NSParameterAssert(steps != nil);
+    std::vector<int> stepsList;
+    for (NSNumber * const step in steps) {
+        stepsList.push_back(step.intValue);
+    }
+    try {
+        return [[ASLSerializable alloc] initWithGaloisKey:_keyGenerator->galois_keys(stepsList)];
+        
+    }  catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    }  catch (std::runtime_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealRuntimeError:e];
+        }
+        return nil;
+    }
     return nil;
 }
 
@@ -179,8 +232,25 @@
     return nil;
 }
 
-- (ASLGaloisKeys *)galoisKeys:(NSError **)error {
-    // TODO - return Serializable key
+- (ASLSerializable<ASLGaloisKeys *> *)galoisKeys:(NSError **)error {
+    try {
+        return [[ASLSerializable alloc] initWithGaloisKey:_keyGenerator->galois_keys()];
+    }  catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    }  catch (std::runtime_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealRuntimeError:e];
+        }
+        return nil;
+    }
     return nil;
 }
 

@@ -12,6 +12,7 @@
 #import "ASLSecretKey.h"
 #import "ASLGaloisKeys.h"
 #import "ASLRelinearizationKeys.h"
+#import "ASLSerializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -91,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLLogicError if the encryption parameters do not support
  keyswitching
  */
-- (ASLRelinearizationKeys * _Nullable)relinearizationKeys:(NSError **)error;
+- (ASLSerializable<ASLRelinearizationKeys *> * _Nullable)relinearizationKeys:(NSError **)error;
 
 /*!
  Generates and returns Galois keys. This function returns Galois keys in
@@ -148,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
  keyswitching
  @throws ASLInvalidParameter if the Galois elements are not valid
  */
-- (ASLGaloisKeys * _Nullable)galoisKeysWithGaloisElements:(NSArray<NSNumber *>*)galoisElements
+- (ASLSerializable<ASLGaloisKeys *> * _Nullable)galoisKeysWithGaloisElements:(NSArray<NSNumber *>*)galoisElements
                                                     error:(NSError **)error;
 
 /*!
@@ -192,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLInvalidParameter if the step counts are not valid
  */
 
-- (ASLGaloisKeys * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
+- (ASLSerializable<ASLGaloisKeys *> * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
                                             error:(NSError **)error;
 
 /*!
@@ -212,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
  keyswitching
  */
 
-- (ASLGaloisKeys * _Nullable)galoisKeys:(NSError **)error;
+- (ASLSerializable<ASLGaloisKeys *> * _Nullable)galoisKeys:(NSError **)error;
 
 /*!
  Generates and returns Galois keys. This function returns Galois keys in

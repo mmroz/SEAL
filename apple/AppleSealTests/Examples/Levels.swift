@@ -162,8 +162,8 @@ class Levels: XCTestCase {
         let keygen = try ASLKeyGenerator(context: context)
         let publicKey = keygen.publicKey
         let secretKey = keygen.secretKey
-        let relinKeys = try keygen.relinearizationKeys()
-        let galoisKeys = try keygen.galoisKeys()
+        let relinKeys = try keygen.relinearizationKeysLocal()
+        let galoisKeys = try keygen.galoisKeysLocal()
         print()
         print("Print the parameter IDs of generated elements.")
         print("    + publicKey:  {\(publicKey.parametersId)")

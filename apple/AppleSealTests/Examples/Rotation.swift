@@ -70,7 +70,7 @@ class Rotation: XCTestCase {
          Rotations require yet another type of special key called `Galois keys'. These
          are easily obtained from the KeyGenerator.
          */
-        let galKeys = try keygen.galoisKeys()
+        let galKeys = try keygen.galoisKeysLocal()
         
         /*
          Now rotate both matrix rows 3 steps to the left, decrypt, decode, and print.
@@ -131,7 +131,7 @@ class Rotation: XCTestCase {
         let keygen = try ASLKeyGenerator(context: context)
         let publicKey = keygen.publicKey
         let secretKey = keygen.secretKey
-        let galKeys = try keygen.galoisKeys()
+        let galKeys = try keygen.galoisKeysLocal()
         let encryptor = try ASLEncryptor(context: context, publicKey: publicKey)
         let evaluator = try ASLEvaluator(context)
         let decryptor = try ASLDecryptor(context: context, secretKey: secretKey)

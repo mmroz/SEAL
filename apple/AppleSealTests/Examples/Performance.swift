@@ -100,7 +100,7 @@ class Performance: XCTestCase {
              */
             print("Generating relinearization keys: ")
             try timedEvent {
-                try relinKeys = keygen.relinearizationKeys()
+                try relinKeys = keygen.relinearizationKeysLocal()
             }
             
             if (!context.keyContextData.qualifiers.isUsingBatching)
@@ -118,7 +118,7 @@ class Performance: XCTestCase {
              */
             print("Generating Galois keys: ")
             try timedEvent {
-                try galKeys = keygen.galoisKeys()
+                try galKeys = keygen.galoisKeysLocal()
             }
         }
         
@@ -308,7 +308,7 @@ class Performance: XCTestCase {
              */
             print("Generating relinearization keys: ")
             try timedEvent {
-                let _ = try keygen.relinearizationKeys()
+                let _ = try keygen.relinearizationKeysLocal()
             }
             
             if (!context.keyContextData.qualifiers.isUsingBatching)
@@ -326,7 +326,7 @@ class Performance: XCTestCase {
              */
             print("Generating Galois keys: ")
             try timedEvent {
-                galKeys = try keygen.galoisKeys()
+                galKeys = try keygen.galoisKeysLocal()
             }
         }
         

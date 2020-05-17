@@ -47,13 +47,13 @@ class ASLValidityCheckerTests: XCTestCase {
     }
     
     func testIsMetaDataValidForRelinearizationKeys() {
-        XCTAssertTrue(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(1024)).relinearizationKeys(), context: bfvContext(1024)))
-        XCTAssertFalse(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(4096)).relinearizationKeys(), context: bfvContext(1024)))
+        XCTAssertTrue(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(1024)).relinearizationKeysLocal(), context: bfvContext(1024)))
+        XCTAssertFalse(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(4096)).relinearizationKeysLocal(), context: bfvContext(1024)))
     }
     
     func testIsMetaDataValidForGaloisKeys() {
-        XCTAssertTrue(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(1024)).galoisKeys(), context: bfvContext(1024)))
-        XCTAssertFalse(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(4096)).galoisKeys(), context: bfvContext(1024)))
+        XCTAssertTrue(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(1024)).galoisKeysLocal(), context: bfvContext(1024)))
+        XCTAssertFalse(ASLValidityChecker.isMetaDataValid(for: try keyGen(bfvContext(4096)).galoisKeysLocal(), context: bfvContext(1024)))
     }
     
     func testIsBufferValidForCipherText() throws {
@@ -74,11 +74,11 @@ class ASLValidityCheckerTests: XCTestCase {
     }
     
     func testIsBufferValidForRelinearizationKeys() throws {
-        XCTAssertTrue(ASLValidityChecker.isBufferValid(for: try keyGen(bfvContext(4096)).relinearizationKeys()))
+        XCTAssertTrue(ASLValidityChecker.isBufferValid(for: try keyGen(bfvContext(4096)).relinearizationKeysLocal()))
     }
     
     func testIsBufferValidForGaloisKeys() throws {
-        XCTAssertTrue(ASLValidityChecker.isBufferValid(for: try keyGen(bfvContext(4096)).galoisKeys()))
+        XCTAssertTrue(ASLValidityChecker.isBufferValid(for: try keyGen(bfvContext(4096)).galoisKeysLocal()))
     }
     
     func testIsDataValidForPlainText() throws {
@@ -106,13 +106,13 @@ class ASLValidityCheckerTests: XCTestCase {
     }
     
     func testIsDataValidForRelinearizationKeys() throws {
-        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(4096)).relinearizationKeys(), context: bfvContext(4096)))
-        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(1024)).relinearizationKeys(), context: bfvContext(4096)))
+        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(4096)).relinearizationKeysLocal(), context: bfvContext(4096)))
+        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(1024)).relinearizationKeysLocal(), context: bfvContext(4096)))
     }
     
     func testIsDataValidForGaloisKeys() throws {
-        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(4096)).galoisKeys(), context: bfvContext(4096)))
-        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(1024)).galoisKeys(), context: bfvContext(4096)))
+        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(4096)).galoisKeysLocal(), context: bfvContext(4096)))
+        XCTAssertTrue(ASLValidityChecker.isDataValid(for: try keyGen(bfvContext(1024)).galoisKeysLocal(), context: bfvContext(4096)))
     }
     
     func testIsValidForPlainText() throws {
@@ -139,11 +139,11 @@ class ASLValidityCheckerTests: XCTestCase {
     }
     
     func testIsValidForRelinearizationKeys() throws {
-         XCTAssertTrue(ASLValidityChecker.isValid(for: try keyGen(bfvContext(4096)).relinearizationKeys(), context: bfvContext(4096)))
+         XCTAssertTrue(ASLValidityChecker.isValid(for: try keyGen(bfvContext(4096)).relinearizationKeysLocal(), context: bfvContext(4096)))
     }
     
     func testIsValidForGaloisKeys() throws {
-         XCTAssertTrue(ASLValidityChecker.isValid(for: try keyGen(bfvContext(4096)).galoisKeys(), context: bfvContext(4096)))
+         XCTAssertTrue(ASLValidityChecker.isValid(for: try keyGen(bfvContext(4096)).galoisKeysLocal(), context: bfvContext(4096)))
     }
     
     private func bfvContext(_ polyModulusDegree: Int) -> ASLSealContext {

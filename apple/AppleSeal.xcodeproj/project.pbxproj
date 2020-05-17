@@ -131,6 +131,9 @@
 		E4BA55B323B8F5840067EBBC /* ASLModulus.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BA55B123B8F5840067EBBC /* ASLModulus.mm */; };
 		E4BA55B523B900D70067EBBC /* ASLModulus.h in Headers */ = {isa = PBXBuildFile; fileRef = E4BA55B023B8F5840067EBBC /* ASLModulus.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4C376D5244D15DC00B8603F /* ASLEncryptionParameterQualifiers.h in Headers */ = {isa = PBXBuildFile; fileRef = E4C376D4244D15CB00B8603F /* ASLEncryptionParameterQualifiers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4F1743224718FC3008E2D2D /* ASLSerializable.h in Headers */ = {isa = PBXBuildFile; fileRef = E4F1743024718FC3008E2D2D /* ASLSerializable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4F1743324718FC3008E2D2D /* ASLSerializable.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F1743124718FC3008E2D2D /* ASLSerializable.mm */; };
+		E4F17435247198F6008E2D2D /* ASLSerializable_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E4F17434247198F6008E2D2D /* ASLSerializable_Internal.h */; };
 		E4FAAFAE245520260016748C /* CKKSBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAAFAD245520260016748C /* CKKSBasics.swift */; };
 		E4FAAFB02455203B0016748C /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAAFAF2455203B0016748C /* Rotation.swift */; };
 		E4FAAFB22455204E0016748C /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAAFB12455204E0016748C /* Performance.swift */; };
@@ -304,6 +307,9 @@
 		E4BA55B023B8F5840067EBBC /* ASLModulus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASLModulus.h; sourceTree = "<group>"; };
 		E4BA55B123B8F5840067EBBC /* ASLModulus.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ASLModulus.mm; sourceTree = "<group>"; };
 		E4C376D4244D15CB00B8603F /* ASLEncryptionParameterQualifiers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASLEncryptionParameterQualifiers.h; sourceTree = "<group>"; };
+		E4F1743024718FC3008E2D2D /* ASLSerializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASLSerializable.h; sourceTree = "<group>"; };
+		E4F1743124718FC3008E2D2D /* ASLSerializable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ASLSerializable.mm; sourceTree = "<group>"; };
+		E4F17434247198F6008E2D2D /* ASLSerializable_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASLSerializable_Internal.h; sourceTree = "<group>"; };
 		E4FAAFAD245520260016748C /* CKKSBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKKSBasics.swift; sourceTree = "<group>"; };
 		E4FAAFAF2455203B0016748C /* Rotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotation.swift; sourceTree = "<group>"; };
 		E4FAAFB12455204E0016748C /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
@@ -518,6 +524,9 @@
 				E405EF0A2470F6B0005FF8E0 /* ASLRnsBase.h */,
 				E405EF0E2470F6CE005FF8E0 /* ASLRnsBase_Internal.h */,
 				E405EF0B2470F6B0005FF8E0 /* ASLRnsBase.mm */,
+				E4F1743024718FC3008E2D2D /* ASLSerializable.h */,
+				E4F17434247198F6008E2D2D /* ASLSerializable_Internal.h */,
+				E4F1743124718FC3008E2D2D /* ASLSerializable.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -590,8 +599,10 @@
 				E410F0A123CA5F08001957A0 /* ASLEncryptor.h in Headers */,
 				E4006ECB244F049500283B6C /* ASLNttTables.h in Headers */,
 				E410F0A823CA6775001957A0 /* ASLCipherText_Internal.h in Headers */,
+				E4F17435247198F6008E2D2D /* ASLSerializable_Internal.h in Headers */,
 				E410F0B723CC02E5001957A0 /* ASLKSwitchKeys.h in Headers */,
 				E4C376D5244D15DC00B8603F /* ASLEncryptionParameterQualifiers.h in Headers */,
+				E4F1743224718FC3008E2D2D /* ASLSerializable.h in Headers */,
 				E43CA28E23BA929C004EB5D8 /* ASLMemoryManagerProfile.h in Headers */,
 				E4006ECE244F0A1F00283B6C /* ASLNttTables_Internal.h in Headers */,
 				E47C294423D3A54000AC70C9 /* ASLKeyGenerator.h in Headers */,
@@ -783,6 +794,7 @@
 				E4B0954723BCE2D800FF780D /* ASLPlainText.mm in Sources */,
 				E410F0A223CA5F08001957A0 /* ASLEncryptor.mm in Sources */,
 				E43CA27923B99AA9004EB5D8 /* ASLSealContextData.mm in Sources */,
+				E4F1743324718FC3008E2D2D /* ASLSerializable.mm in Sources */,
 				E4271A3B23B8071D00B08B37 /* ASLBigUInt.mm in Sources */,
 				E4B0954D23BD5B3700FF780D /* ASLCipherText.mm in Sources */,
 				E4BA55A323B8131F0067EBBC /* NSString+CXXAdditions.mm in Sources */,

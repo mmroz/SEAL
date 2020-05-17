@@ -32,7 +32,7 @@ class ASLEvaluatorTests: XCTestCase {
 //        evaluator = try! ASLEvaluator(context)
 //        encoder = try! ASLIntegerEncoder(context: context)
 //        decryptor = try! ASLDecryptor(context: context, secretKey: secretKey)
-//        relinearizationKey = try! keygen.relinearizationKeys()
+//        relinearizationKey = try! keygen.relinearizationKeysLocal()
 //    }
 //
 //    override func tearDown() {
