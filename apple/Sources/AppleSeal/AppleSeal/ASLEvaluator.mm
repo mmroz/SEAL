@@ -1608,7 +1608,7 @@ relinearizationKeys:(ASLRelinearizationKeys*)relinearizationKeys
     
     seal::Ciphertext sealEncrypted = encrypted.sealCipherText;
     try {
-        _evaluator->apply_galois_inplace(sealEncrypted, galoisElement, galoisKey.sealGaloisKeys, pool.memoryPoolHandle);
+        _evaluator->apply_galois_inplace(sealEncrypted, static_cast<std::uint32_t>(galoisElement), galoisKey.sealGaloisKeys, pool.memoryPoolHandle);
         return [[ASLCipherText alloc] initWithCipherText:sealEncrypted];
     } catch (std::invalid_argument const &e) {
         if (error != nil) {
@@ -1632,7 +1632,7 @@ relinearizationKeys:(ASLRelinearizationKeys*)relinearizationKeys
     
     seal::Ciphertext sealEncrypted = encrypted.sealCipherText;
     try {
-        _evaluator->apply_galois_inplace(sealEncrypted, galoisElement, galoisKey.sealGaloisKeys);
+        _evaluator->apply_galois_inplace(sealEncrypted, static_cast<std::uint32_t>(galoisElement), galoisKey.sealGaloisKeys);
         return [[ASLCipherText alloc] initWithCipherText:sealEncrypted];
     } catch (std::invalid_argument const &e) {
         if (error != nil) {
@@ -1661,7 +1661,7 @@ relinearizationKeys:(ASLRelinearizationKeys*)relinearizationKeys
     seal::Ciphertext sealEncrypted = encrypted.sealCipherText;
     seal::Ciphertext sealDestination = destination.sealCipherText;
     try {
-        _evaluator->apply_galois(sealEncrypted, galoisElement, galoisKey.sealGaloisKeys, sealDestination, pool.memoryPoolHandle);
+        _evaluator->apply_galois(sealEncrypted, static_cast<std::uint32_t>(galoisElement), galoisKey.sealGaloisKeys, sealDestination, pool.memoryPoolHandle);
         return [[ASLCipherText alloc] initWithCipherText:sealDestination];
     } catch (std::invalid_argument const &e) {
         if (error != nil) {
@@ -1688,7 +1688,7 @@ relinearizationKeys:(ASLRelinearizationKeys*)relinearizationKeys
     seal::Ciphertext sealEncrypted = encrypted.sealCipherText;
     seal::Ciphertext sealDestination = destination.sealCipherText;
     try {
-        _evaluator->apply_galois(sealEncrypted, galoisElement, galoisKey.sealGaloisKeys, sealDestination);
+        _evaluator->apply_galois(sealEncrypted, static_cast<std::uint32_t>(galoisElement), galoisKey.sealGaloisKeys, sealDestination);
         return [[ASLCipherText alloc] initWithCipherText:sealDestination];
     } catch (std::invalid_argument const &e) {
         if (error != nil) {

@@ -8,7 +8,7 @@
 
 #import "ASLBaseConverter.h"
 
-#include "seal/util/rns.h"
+#include <seal/util/rns.h>
 
 #import "ASLMemoryPoolHandle_Internal.h"
 #import "ASLRnsBase_Internal.h"

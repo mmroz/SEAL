@@ -47,7 +47,7 @@
     NSString * encryptionParametersString = (_contextData.get() == nil) ? @"{}" : self.encryptionParameters.description;
     NSString * paramsIdString = (_contextData.get() == nil) ? @"{}" : ASLParametersIdTypeDescription(self.parametersId);
     
-    return [NSString stringWithFormat:@"Encryption Parameters: %@, params Id: %@, Coefficient Mod PlainModulus: %@", encryptionParametersString, paramsIdString];
+    return [NSString stringWithFormat:@"Encryption Parameters: %@, params Id: %@", encryptionParametersString, paramsIdString];
 }
 
 #pragma mark - Properties
