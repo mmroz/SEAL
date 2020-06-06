@@ -30,7 +30,7 @@ let package = Package(
             ]),
         .systemLibrary(
             name: "seal",
-            pkgConfig: "seal"),
+            pkgConfig: "seal-3.5"),
         .testTarget(
             name: "AppleSealTests",
             dependencies: ["AppleSeal"]),

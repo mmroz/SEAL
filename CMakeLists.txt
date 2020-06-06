@@ -114,8 +114,11 @@ set(CMAKE_LIBRARY_RUNTIME_DIRECTORY ${SEAL_SOURCE_DIR}/bin)
 set(SEAL_TARGETS_FILENAME ${SEAL_SOURCE_DIR}/cmake/SEALTargets.cmake)
 set(SEAL_CONFIG_IN_FILENAME ${SEAL_SOURCE_DIR}/cmake/SEALConfig.cmake.in)
 set(SEAL_CONFIG_FILENAME ${SEAL_SOURCE_DIR}/cmake/SEALConfig.cmake)
+set(SEAL_PKGCONFIG_IN_FILENAME ${SEAL_SOURCE_DIR}/seal.pc.in)
+set(SEAL_PKGCONFIG_FILENAME ${SEAL_SOURCE_DIR}/seal-${SEAL_VERSION_MAJOR}.${SEAL_VERSION_MINOR}.pc)
 set(SEAL_CONFIG_VERSION_FILENAME ${SEAL_SOURCE_DIR}/cmake/SEALConfigVersion.cmake)
 set(SEAL_CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/SEAL-${SEAL_VERSION_MAJOR}.${SEAL_VERSION_MINOR})
+set(SEAL_PKGCONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 set(SEAL_INCLUDES_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/SEAL-${SEAL_VERSION_MAJOR}.${SEAL_VERSION_MINOR})
 set(SEAL_INCLUDES_BUILD_DIR ${SEAL_SOURCE_DIR}/native/src)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${SEAL_SOURCE_DIR}/bin)
@@ -708,6 +711,12 @@ install(
         ${SEAL_CONFIG_VERSION_FILENAME}
     DESTINATION ${SEAL_CONFIG_INSTALL_DIR})
 
+# Install the pkgconfig file
+install(
+    FILES
+        ${SEAL_PKGCONFIG_FILENAME}
+    DESTINATION ${SEAL_PKGCONFIG_INSTALL_DIR})
+
 # We export SEALTargets from the build tree so it can be used by other projects
 # without requiring an install.
 export(
@@ -772,6 +781,12 @@ unset(SEAL_MACOS_SEAL_C_PATH)
 configure_file(
     ${SEAL_SOURCE_DIR}/dotnet/nuget/SEALNet-multi.nuspec.in
     ${SEAL_SOURCE_DIR}/dotnet/nuget/SEALNet-multi.nuspec
+    @ONLY)
+
+# Create pkg-config file
+configure_file(
+    ${SEAL_PKGCONFIG_IN_FILENAME}
+    ${SEAL_PKGCONFIG_FILENAME}
     @ONLY)
 
 set(SEAL_WINDOWS_SEAL_C_PATH ${SEAL_SOURCE_DIR}/lib/x64/$Configuration$/sealc.dll)
