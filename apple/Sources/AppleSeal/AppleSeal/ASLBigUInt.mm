@@ -131,7 +131,6 @@
     return [self initWithBigUInt:encodedBigUInt];
 }
 
-
 - (void)encodeWithCoder:(NSCoder *)coder {
     std::size_t const lengthUpperBound = _bigUInt.save_size(seal::Serialization::compr_mode_default);
     NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];

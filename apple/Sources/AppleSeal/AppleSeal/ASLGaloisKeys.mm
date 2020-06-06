@@ -19,7 +19,7 @@
     seal::GaloisKeys _galoisKeys;
 }
 
-#pragma mark - initializers
+#pragma mark - Initialization
 
 - (instancetype)init {
     self = [super init];
@@ -33,7 +33,7 @@
 #pragma mark - Public Methods
 
 -(NSNumber *)getIndex:(NSNumber*)galoisElement
-            error:(NSError **)error {
+                error:(NSError **)error {
     NSParameterAssert(galoisElement != nil);
     NSParameterAssert(galoisElement.intValue >= 2);
     
@@ -48,7 +48,7 @@
 }
 
 -(NSNumber *)hasKey:(NSNumber*)galoisElement
-        error:(NSError **)error {
+              error:(NSError **)error {
     NSParameterAssert(galoisElement != nil);
     NSParameterAssert(galoisElement.intValue >= 2);
     try {
@@ -61,7 +61,7 @@
     }
 }
 
--(NSArray<ASLPublicKey*>*)key:(NSNumber*)galoisElement
+-(NSArray<ASLPublicKey*>*)key:(NSNumber *)galoisElement
                         error:(NSError **)error {
     NSParameterAssert(galoisElement != nil);
     NSParameterAssert(galoisElement.intValue >= 2);
@@ -80,6 +80,17 @@
     }
 }
 
+- (id)objectForKeyedSubscript:(NSNumber *)key {
+    NSError *error = nil;
+    NSArray<ASLPublicKey *> * const value = [self key:key
+                                                error:&error];
+    if (value == nil) {
+        [NSException raise:NSRangeException
+                    format:@"Key %@ out of range", key];
+    } else {
+        return value;
+    }
+}
 
 #pragma mark - ASLGaloisKeys_Internal
 
@@ -97,5 +108,38 @@
 
        return self;
 }
+
+@end
+
+@implementation ASLSerializableGaloisKeys {
+    seal::Serializable<seal::GaloisKeys> *_serializableKeys;
+}
+
+- (instancetype)initWithSerializableGaloisKey:(seal::Serializable<seal::GaloisKeys>)serializableKeys {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    _serializableKeys = std::move(&serializableKeys);
+    return self;
+}
+
+- (void)dealloc {
+    delete _serializableKeys;
+     _serializableKeys = nullptr;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    std::size_t const lengthUpperBound = _serializableKeys->save_size();
+    NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
+    std::size_t const actualLength = _serializableKeys->save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
+    [data setLength:actualLength];
+    [coder encodeDataObject:data];
+}
+
+- (nullable instancetype)initWithCoder:(nonnull NSCoder *)coder {
+    // Intentially left blank
+}
+
 
 @end

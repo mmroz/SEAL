@@ -127,3 +127,34 @@
 
 
 @end
+
+@implementation ASLSerializableRelineraizationKeys {
+    seal::Serializable<seal::RelinKeys> *_serializableKeys;
+}
+
+- (instancetype)initWithSerializableRelinearizationKey:(seal::Serializable<seal::RelinKeys>)serializableKeys {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    _serializableKeys = std::move(&serializableKeys);
+    return self;
+}
+
+- (void)dealloc {
+    delete _serializableKeys;
+     _serializableKeys = nullptr;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    std::size_t const lengthUpperBound = _serializableKeys->save_size();
+    NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
+    std::size_t const actualLength = _serializableKeys->save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
+    [data setLength:actualLength];
+    [coder encodeDataObject:data];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+   // Intentially left blank
+}
+@end

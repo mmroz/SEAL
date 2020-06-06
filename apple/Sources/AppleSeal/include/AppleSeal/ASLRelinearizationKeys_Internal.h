@@ -9,6 +9,7 @@
 #import "ASLRelinearizationKeys.h"
 
 #include "seal/relinkeys.h"
+#include "seal/serializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithRelinearizationKeys:(seal::RelinKeys)RelinearizationKeys;
 
 @end
+
+@interface ASLSerializableRelineraizationKeys ()
+
+- (instancetype)initWithSerializableRelinearizationKey:(seal::Serializable<seal::RelinKeys>)serializableKeys;
+
+@end
+
 
 NS_ASSUME_NONNULL_END
 

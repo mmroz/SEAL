@@ -115,8 +115,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if plain is not in default NTT form
  */
 - (ASLCipherText * _Nullable)encryptWithPlainText:(ASLPlainText *)plainText
-                  destination:(ASLCipherText *)cipherText
-                       error:(NSError **)error;
+                                      destination:(ASLCipherText *)cipherText
+                                            error:(NSError **)error;
 
 /*!
  Encrypts a plaintext with the public key and stores the result in
@@ -138,9 +138,9 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 - (ASLCipherText * _Nullable)encryptWithPlainText:(ASLPlainText *)plainText
-                  destination:(ASLCipherText *)cipherText
-                        pool:(ASLMemoryPoolHandle *)pool
-                       error:(NSError **)error;
+                                      destination:(ASLCipherText *)cipherText
+                                             pool:(ASLMemoryPoolHandle *)pool
+                                            error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the public key and stores the result in
@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealLogicError if a public key is not set
  */
 -(ASLCipherText * _Nullable)encryptZeroWithCipherText:(ASLCipherText *)cipherText
-                           error:(NSError **)error;
+                                                error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the public key and stores the result in
@@ -170,8 +170,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptZeroWithCipherText:(ASLCipherText *)cipherText
-                            pool:(ASLMemoryPoolHandle *)pool
-                           error:(NSError **)error;
+                                                 pool:(ASLMemoryPoolHandle *)pool
+                                                error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the public key and stores the result in
@@ -187,8 +187,8 @@ NS_ASSUME_NONNULL_BEGIN
  parameters
  */
 -(ASLCipherText * _Nullable)encryptZeroWithParametersId:(ASLParametersIdType)parametersId
-                        cipherText:(ASLCipherText *)cipherText
-                             error:(NSError **)error;
+                                             cipherText:(ASLCipherText *)cipherText
+                                                  error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the public key and stores the result in
@@ -206,9 +206,9 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptZeroWithParametersId:(ASLParametersIdType)parametersId
-                        cipherText:(ASLCipherText *)cipherText
-                              pool:(ASLMemoryPoolHandle *)pool
-                             error:(NSError **)error;
+                                             cipherText:(ASLCipherText *)cipherText
+                                                   pool:(ASLMemoryPoolHandle *)pool
+                                                  error:(NSError **)error;
 
 /*!
  Encrypts a plaintext with the secret key and stores the result in
@@ -229,8 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptSymmetricWithPlainText:(ASLPlainText *)plainText
-                          cipherText:(ASLCipherText *)cipherText
-                               error:(NSError **)error;
+                                               cipherText:(ASLCipherText *)cipherText
+                                                    error:(NSError **)error;
 
 /*!
  Encrypts a plaintext with the secret key and stores the result in
@@ -252,9 +252,9 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptSymmetricWithPlainText:(ASLPlainText *)plainText
-                          cipherText:(ASLCipherText *)cipherText
-                                pool:(ASLMemoryPoolHandle *)pool
-                               error:(NSError **)error;
+                                               cipherText:(ASLCipherText *)cipherText
+                                                     pool:(ASLMemoryPoolHandle *)pool
+                                                    error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the secret key and stores the result in
@@ -268,7 +268,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealLogicError if a secret key is not set
  */
 -(ASLCipherText * _Nullable)encryptZeroSymmetricWithCipherText:(ASLCipherText *)cipherText
-                                    error:(NSError **)error;
+                                                         error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the secret key and stores the result in
@@ -284,8 +284,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptZeroSymmetricWithCipherText:(ASLCipherText *)cipherText
-                                     pool:(ASLMemoryPoolHandle *)pool
-                                    error:(NSError **)error;
+                                                          pool:(ASLMemoryPoolHandle *)pool
+                                                         error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the secret key and stores the result in
@@ -302,8 +302,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptZeroSymmetricWithParametersId:(ASLParametersIdType)parametersId
-                                destination:(ASLCipherText *)destination
-                                      error:(NSError **)error;
+                                                     destination:(ASLCipherText *)destination
+                                                           error:(NSError **)error;
 
 /*!
  Encrypts a zero plaintext with the secret key and stores the result in
@@ -321,9 +321,147 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASL_SealInvalidParameter if pool is uninitialized
  */
 -(ASLCipherText * _Nullable)encryptZeroSymmetricWithPool:(ASLParametersIdType)parametersId
-                                destination:(ASLCipherText *)destination
-                                       pool:(ASLMemoryPoolHandle *)pool
-                                      error:(NSError **)error;
+                                             destination:(ASLCipherText *)destination
+                                                    pool:(ASLMemoryPoolHandle *)pool
+                                                   error:(NSError **)error;
+
+/*!
+ Encrypts a plaintext with the secret key and returns the ciphertext as
+ a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to:
+ 1) in BFV, the highest (data) level in the modulus switching chain,
+ 2) in CKKS, the encryption parameters of the plaintext.
+ Dynamic memory allocations in the process are allocated from the memory
+ pool pointed to by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @param plain The plaintext to encrypt
+ @param pool The MemoryPoolHandle pointing to a valid memory pool
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if plain is not valid for the encryption
+ parameters
+ @throws ASL_SealInvalidParameter if plain is not in default NTT form
+ @throws ASL_SealInvalidParameter if pool is uninitialized
+ */
+-(ASLSerializableCipherText * _Nullable)encryptSymmetricWithPlain:(ASLPlainText *)plain
+                                                             pool:(ASLMemoryPoolHandle *)pool
+                                                            error:(NSError **)error;
+
+/*!
+ Encrypts a plaintext with the secret key and returns the ciphertext as
+ a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to:
+ 1) in BFV, the highest (data) level in the modulus switching chain,
+ 2) in CKKS, the encryption parameters of the plaintext.
+ Dynamic memory allocations in the process are allocated from the memory
+ pool pointed to by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @param plain The plaintext to encrypt
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if plain is not valid for the encryption
+ parameters
+ @throws ASL_SealInvalidParameter if plain is not in default NTT form
+ */
+-(ASLSerializableCipherText * _Nullable)encryptSymmetricWithPlain:(ASLPlainText *)plain
+                                                            error:(NSError **)error;
+
+/*!
+ Encrypts a zero plaintext with the secret key and returns the ciphertext
+ as a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to the
+ given parms_id. Dynamic memory allocations in the process are allocated
+ from the memory pool pointed to by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @param parms_id The parms_id for the resulting ciphertext
+ @param pool The MemoryPoolHandle pointing to a valid memory pool
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if parms_id is not valid for the encryption
+ parameters
+ @throws ASL_SealInvalidParameter if pool is uninitialized
+ */
+-(ASLSerializableCipherText * _Nullable)encryptZeroSymmetricWithParametersId:(ASLParametersIdType)parametersId
+                                                                        pool:(ASLMemoryPoolHandle *)pool
+                                                                       error:(NSError **)error;
+
+/*!
+ Encrypts a zero plaintext with the secret key and returns the ciphertext
+ as a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to the
+ given parms_id. Dynamic memory allocations in the process are allocated
+ from the memory pool pointed to by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @param parms_id The parms_id for the resulting ciphertext
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if parms_id is not valid for the encryption
+ parameters
+ @throws ASL_SealInvalidParameter if pool is uninitialized
+ */
+-(ASLSerializableCipherText * _Nullable)encryptZeroSymmetricWithParametersId:(ASLParametersIdType)parametersId
+                                                                 error:(NSError **)error;
+
+/**
+ Encrypts a zero plaintext with the secret key and returns the ciphertext
+ as a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to the
+ highest (data) level in the modulus switching chain. Dynamic memory
+ allocations in the process are allocated from the memory pool pointed to
+ by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @param pool The MemoryPoolHandle pointing to a valid memory pool
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if pool is uninitialized
+ */
+
+-(ASLSerializableCipherText * _Nullable)encryptZeroSymmetricWithPool:(ASLMemoryPoolHandle *)pool
+                                                               error:(NSError **)error;
+
+/**
+ Encrypts a zero plaintext with the secret key and returns the ciphertext
+ as a serializable object.
+ 
+ The encryption parameters for the resulting ciphertext correspond to the
+ highest (data) level in the modulus switching chain. Dynamic memory
+ allocations in the process are allocated from the memory pool pointed to
+ by the given MemoryPoolHandle.
+ 
+ Half of the ciphertext data is pseudo-randomly generated from a seed to
+ reduce the object size. The resulting serializable object cannot be used
+ directly and is meant to be serialized for the size reduction to have an
+ impact.
+ 
+ @throws ASL_SealLogicError if a secret key is not set
+ @throws ASL_SealInvalidParameter if pool is uninitialized
+ */
+-(ASLSerializableCipherText * _Nullable)encryptZeroSymmetricWithError:(NSError **)error;
 
 /*!
  Give a new instance of public key.
@@ -344,5 +482,4 @@ NS_ASSUME_NONNULL_BEGIN
                error:(NSError **)error;
 
 @end
-
 NS_ASSUME_NONNULL_END

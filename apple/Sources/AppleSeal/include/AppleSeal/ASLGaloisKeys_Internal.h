@@ -9,6 +9,7 @@
 #import "ASLGaloisKeys.h"
 
 #include "seal/galoiskeys.h"
+#include "seal/serializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) seal::GaloisKeys sealGaloisKeys;
 
 - (instancetype)initWithGaloisKeys:(seal::GaloisKeys)sealGaloisKeys;
+
+@end
+
+@interface ASLSerializableGaloisKeys ()
+
+- (instancetype)initWithSerializableGaloisKey:(seal::Serializable<seal::GaloisKeys>)serializableKeys;
 
 @end
 

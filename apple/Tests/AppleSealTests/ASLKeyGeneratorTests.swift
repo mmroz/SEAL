@@ -33,19 +33,29 @@ class ASLKeyGeneratorTests: XCTestCase {
     }
     
     func testPublicKey() throws {
-        XCTAssertEqual(keyGenerator.publicKey, ASLPublicKey())
+        XCTAssertNoThrow(keyGenerator.publicKey)
     }
     
     func testSecretKey() throws {
-        XCTAssertEqual(keyGenerator.secretKey, ASLSecretKey())
+        XCTAssertNoThrow(keyGenerator.secretKey)
     }
     
     func testRelinearizationKeysLocal() throws {
-        XCTAssertEqual(try keyGenerator.relinearizationKeysLocal(), ASLRelinearizationKeys())
+        XCTAssertNoThrow(try keyGenerator.relinearizationKeysLocal())
     }
     
     func testRelinearizationKeys() throws {
-        // TODO - add
+       let relinKey = try keyGenerator.relinearizationKeys()
+        
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(relinKey, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        let decodedRelinKey = unarchiver.decodeObject(of: ASLRelinearizationKeys.self, forKey: "testObject")!
+        
+        XCTAssertEqual(relinKey, decodedRelinKey)
     }
     
     func testGaloisKeysLocalWithGaloisElements() throws {
@@ -55,7 +65,17 @@ class ASLKeyGeneratorTests: XCTestCase {
     }
     
     func testGaloisKeysWithGaloisElements() throws {
-        // TODO - add
+        let galoisKey = try keyGenerator.galoisKeys(withGaloisElements: [4,16,256])
+        
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(galoisKey, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        let decodedGaloisKey = unarchiver.decodeObject(of: ASLGaloisKeys.self, forKey: "testObject")!
+        
+        XCTAssertEqual(galoisKey, decodedGaloisKey)
     }
     
     func testGaloisKeysLocalWithSteps() throws {
@@ -65,15 +85,34 @@ class ASLKeyGeneratorTests: XCTestCase {
     }
     
     func testGaloisKeysWithSteps() throws {
-        // TODO - add
+        let galoisKey = try keyGenerator.galoisKeys(withSteps: [4,16,256])
+        
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(galoisKey, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        let decodedGaloisKey = unarchiver.decodeObject(of: ASLGaloisKeys.self, forKey: "testObject")!
+        
+        XCTAssertEqual(galoisKey, decodedGaloisKey)
     }
     
     func testGaloisKeys() throws {
-        // TODO - add
+        let galoisKey = try keyGenerator.galoisKeys()
+        
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(galoisKey, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        let decodedGaloisKey = unarchiver.decodeObject(of: ASLGaloisKeys.self, forKey: "testObject")!
+        
+        XCTAssertEqual(galoisKey, decodedGaloisKey)
     }
     
     func testGaloisKeysWithLocal() throws {
-        let result = try keyGenerator.galoisKeysLocal()
-        XCTAssertEqual(result, ASLGaloisKeys())
+        XCTAssertNoThrow(try keyGenerator.galoisKeysLocal())
     }
 }

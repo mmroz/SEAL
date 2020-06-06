@@ -392,6 +392,131 @@
     return nil;
 }
 
+- (ASLSerializableCipherText *)encryptSymmetricWithPlain:(ASLPlainText *)plain
+                                                    pool:(ASLMemoryPoolHandle *)pool
+                                                    error:(NSError **)error {
+    const seal::Plaintext sealPlainText = plain.sealPlainText;
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_symmetric(sealPlainText, pool.memoryPoolHandle);
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
+- (ASLSerializableCipherText *)encryptSymmetricWithPlain:(ASLPlainText *)plain
+                                                    error:(NSError **)error {
+    const seal::Plaintext sealPlainText = plain.sealPlainText;
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_symmetric(sealPlainText);
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
+- (ASLSerializableCipherText *)encryptZeroSymmetricWithParametersId:(ASLParametersIdType)parametersId
+                                                               pool:(ASLMemoryPoolHandle *)pool
+                                                              error:(NSError **)error {
+    seal::parms_id_type sealParametersId = {};
+    std::copy(std::begin(parametersId.block),
+              std::end(parametersId.block),
+              sealParametersId.begin());
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_zero_symmetric(sealParametersId, pool.memoryPoolHandle);
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
+- (ASLSerializableCipherText *)encryptZeroSymmetricWithParametersId:(ASLParametersIdType)parametersId
+                                                              error:(NSError **)error {
+    seal::parms_id_type sealParametersId = {};
+    std::copy(std::begin(parametersId.block),
+              std::end(parametersId.block),
+              sealParametersId.begin());
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_zero_symmetric(sealParametersId);
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
+-(ASLSerializableCipherText *)encryptZeroSymmetricWithPool:(ASLMemoryPoolHandle *)pool
+                                                               error:(NSError **)error {
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_zero_symmetric(pool.memoryPoolHandle);
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
+- (ASLSerializableCipherText *)encryptZeroSymmetricWithError:(NSError **)error {
+    try {
+        seal::Serializable<seal::Ciphertext> serializableText = _encryptor->encrypt_zero_symmetric();
+        return [[ASLSerializableCipherText alloc] initWithSerializableCipherText:serializableText];
+    } catch (std::invalid_argument const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealInvalidParameter:e];
+        }
+        return nil;
+    } catch (std::logic_error const &e) {
+        if (error != nil) {
+            *error = [NSError ASL_SealLogicError:e];
+        }
+        return nil;
+    }
+    return nil;
+}
+
 - (BOOL)setPublicKey:(ASLPublicKey *)publicKey
                error:(NSError **)error {
     NSParameterAssert(publicKey != nil);

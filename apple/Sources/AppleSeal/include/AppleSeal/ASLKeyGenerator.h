@@ -12,7 +12,6 @@
 #import "ASLSecretKey.h"
 #import "ASLGaloisKeys.h"
 #import "ASLRelinearizationKeys.h"
-#import "ASLSerializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -92,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLLogicError if the encryption parameters do not support
  keyswitching
  */
-- (ASLSerializable<ASLRelinearizationKeys *> * _Nullable)relinearizationKeys:(NSError **)error;
+- (ASLSerializableGaloisKeys* _Nullable)relinearizationKeys:(NSError **)error;
 
 /*!
  Generates and returns Galois keys. This function returns Galois keys in
@@ -149,15 +148,15 @@ NS_ASSUME_NONNULL_BEGIN
  keyswitching
  @throws ASLInvalidParameter if the Galois elements are not valid
  */
-- (ASLSerializable<ASLGaloisKeys *> * _Nullable)galoisKeysWithGaloisElements:(NSArray<NSNumber *>*)galoisElements
-                                                    error:(NSError **)error;
+- (ASLSerializableGaloisKeys * _Nullable)galoisKeysWithGaloisElements:(NSArray<NSNumber *>*)galoisElements
+                                                                error:(NSError **)error;
 
 /*!
  Generates and returns Galois keys. This function returns Galois keys in
  a fully expanded form and is meant to be used primarily for demo, testing,
  and debugging purposes. The user needs to give as input a vector of desired
  Galois rotation step counts, where negative step counts correspond to
- rotations to the right and positive step counts correspond to rotations to
+ rotations to the right and positive step counts correspond to rotations toO
  the left. A step count of zero can be used to indicate a column rotation
  in the BFV scheme complex conjugation in the CKKS scheme.
  
@@ -193,8 +192,8 @@ NS_ASSUME_NONNULL_BEGIN
  @throws ASLInvalidParameter if the step counts are not valid
  */
 
-- (ASLSerializable<ASLGaloisKeys *> * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
-                                            error:(NSError **)error;
+- (ASLSerializableGaloisKeys * _Nullable) galoisKeysWithSteps:(NSArray<NSNumber *>*)steps
+                                                        error:(NSError **)error;
 
 /*!
  Generates and returns Galois keys as a serializable object. This function
@@ -213,7 +212,7 @@ NS_ASSUME_NONNULL_BEGIN
  keyswitching
  */
 
-- (ASLSerializable<ASLGaloisKeys *> * _Nullable)galoisKeys:(NSError **)error;
+- (ASLSerializableGaloisKeys * _Nullable)galoisKeys:(NSError **)error;
 
 /*!
  Generates and returns Galois keys. This function returns Galois keys in
@@ -230,6 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (ASLGaloisKeys * _Nullable)galoisKeysLocal:(NSError **)error;
+
+
 
 @end
 

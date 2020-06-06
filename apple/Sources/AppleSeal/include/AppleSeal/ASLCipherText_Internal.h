@@ -9,6 +9,7 @@
 #import "ASLCipherText.h"
 
 #include "seal/ciphertext.h"
+#include "seal/serializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) seal::Ciphertext sealCipherText;
 
 - (instancetype)initWithCipherText:(seal::Ciphertext)cipherText;
-
 @end
 
+@interface ASLSerializableCipherText ()
+
+- (instancetype)initWithSerializableCipherText:(seal::Serializable<seal::Ciphertext>)serializableCipherText;
+
+@end
 NS_ASSUME_NONNULL_END

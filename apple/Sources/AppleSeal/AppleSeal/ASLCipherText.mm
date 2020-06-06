@@ -11,6 +11,7 @@
 #include <string>
 #include <stdexcept>
 #include "seal/ciphertext.h"
+#include "seal/serializable.h"
 
 #import "ASLMemoryPoolHandle.h"
 #import "ASLMemoryPoolHandle_Internal.h"
@@ -229,8 +230,6 @@
     [data setLength:actualLength];
     [coder encodeDataObject:data];
 }
-
-
 
 #pragma mark - NSCopying
 
@@ -462,4 +461,35 @@
     return 0;
 }
 
+@end
+
+@implementation ASLSerializableCipherText {
+    seal::Serializable<seal::Ciphertext> *_serializableCipherText;
+}
+
+- (instancetype)initWithSerializableCipherText:(seal::Serializable<seal::Ciphertext>)serializableCipherText {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    _serializableCipherText = std::move(&serializableCipherText);
+    return self;
+}
+
+- (void)dealloc {
+    delete _serializableCipherText;
+     _serializableCipherText = nullptr;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    std::size_t const lengthUpperBound = _serializableCipherText->save_size();
+    NSMutableData * const data = [NSMutableData dataWithLength:lengthUpperBound];
+    std::size_t const actualLength = _serializableCipherText->save(static_cast<std::byte *>(data.mutableBytes), lengthUpperBound);
+    [data setLength:actualLength];
+    [coder encodeDataObject:data];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+   // Intentially left blank
+}
 @end

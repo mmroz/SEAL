@@ -43,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param galoisElement The Galois element
  @throws ASL_SealInvalidParameter if galois_elt is not valid
  */
--(NSNumber * _Nullable)getIndex:(NSNumber*)galoisElement
-            error:(NSError **)error;
+- (NSNumber * _Nullable)getIndex:(NSNumber*)galoisElement
+                           error:(NSError **)error;
 
 /*!
  Returns whether a Galois key corresponding to a given Galois element exists.
@@ -52,8 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param galoisElement The Galois element
  @throws ASL_SealInvalidParameter if galoisElement is not valid
  */
--(NSNumber * _Nullable)hasKey:(NSNumber*)galoisElement
-        error:(NSError **)error;
+- (NSNumber * _Nullable)hasKey:(NSNumber*)galoisElement
+                         error:(NSError **)error;
 
 /*!
  Returns a const reference to a Galois key. The returned Galois key corresponds
@@ -62,9 +62,15 @@ NS_ASSUME_NONNULL_BEGIN
  @param galoisElement The Galois element
  @throws ASL_SealInvalidParameter if the key corresponding to galois_elt does not exist
  */
--(NSArray<ASLPublicKey*>* _Nullable)key:(NSNumber*)galoisElement
-                        error:(NSError **)error;
+- (NSArray<ASLPublicKey*>* _Nullable)key:(NSNumber *)galoisElement
+                                   error:(NSError **)error;
 
+- (id)objectForKeyedSubscript:(NSNumber *)key;
+
+@end
+
+@interface ASLSerializableGaloisKeys : NSObject <NSCoding>
++ (instancetype)initWithCoder NS_UNAVAILABLE;
 @end
 
 NS_ASSUME_NONNULL_END

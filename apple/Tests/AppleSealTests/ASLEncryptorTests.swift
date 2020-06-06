@@ -56,6 +56,78 @@ class ASLEncryptorTests: XCTestCase {
         XCTAssertNoThrow(try encryptor.encryptZeroSymmetric(withPool: ASLParametersIdType(block: (4, 4, 4, 4)), destination: ASLCipherText(), pool: .global()))
     }
     
+    func testEncryptSymmetricWithPlainAndPool() throws {
+        let encyrpted = try encryptor.encryptSymmetric(withPlain: ASLPlainText(), pool: .global())
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(encyrpted, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        
+        XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
+    func testEncryptSymmetricWithPlain() throws {
+        let encyrpted = try encryptor.encryptSymmetric(withPlain: ASLPlainText())
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(encyrpted, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        
+        XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
+    func testEncryptSymmetricWithParametersAndPool() throws {
+        let encyrpted = try encryptor.encryptZeroSymmetric(with: ASLParametersIdType(block: (4, 4, 4, 4)), pool: .global())
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(encyrpted, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        
+        XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
+    func testEncryptSymmetricWithParameters() throws {
+        let encyrpted = try encryptor.encryptZeroSymmetric(with: ASLParametersIdType(block: (4, 4, 4, 4)))
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(encyrpted, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        
+        XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
+    func testEncryptSymmetricWithPool() throws {
+        let encyrpted = try encryptor.encryptZeroSymmetric(withPool: .global())
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.encode(encyrpted, forKey: "testObject")
+        let data = archiver.encodedData
+        
+        let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.requiresSecureCoding = false
+        
+        XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
+    func testEncryptSymmetric() throws {
+        let encyrpted = try encryptor.encryptZeroSymmetric()
+               let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+               archiver.encode(encyrpted, forKey: "testObject")
+               let data = archiver.encodedData
+               
+               let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+               unarchiver.requiresSecureCoding = false
+               
+               XCTAssertNotNil(unarchiver.decodeObject(of: ASLCipherText.self, forKey: "testObject"))
+    }
+    
     func testSetPublicKey() {
         XCTAssertNoThrow(try encryptor.setPublicKey(ASLPublicKey()))
     }

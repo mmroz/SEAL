@@ -86,4 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     error:(NSError **)error;
 @end
 
+@interface ASLSerializableRelineraizationKeys : NSObject <NSCoding>
++ (instancetype)initWithCoder NS_UNAVAILABLE;
+@end
 NS_ASSUME_NONNULL_END

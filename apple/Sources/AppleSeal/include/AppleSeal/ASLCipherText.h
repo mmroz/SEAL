@@ -397,4 +397,7 @@ NS_ASSUME_NONNULL_BEGIN
                                  error:(NSError **)error;
 @end
 
+@interface ASLSerializableCipherText : NSObject <NSCoding>
++ (instancetype)initWithCoder NS_UNAVAILABLE;
+@end
 NS_ASSUME_NONNULL_END
