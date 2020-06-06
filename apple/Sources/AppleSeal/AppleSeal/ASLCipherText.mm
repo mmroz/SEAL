@@ -477,8 +477,8 @@
 }
 
 - (void)dealloc {
-    delete _serializableCipherText;
-     _serializableCipherText = nullptr;
+//    delete _serializableCipherText;
+//     _serializableCipherText = nullptr;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
